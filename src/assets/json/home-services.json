@@ -1,0 +1,32 @@
+[
+    {
+        "img":"C:/projects/react-js/swastik-finance/src/assets/card-1.jpg",
+        "title":"Loans",
+        "description":"Unlock your dreams with Swastik Finance our flexible loan solutions are tailored to empower you, providing the financial support you need to turn aspirations into reality."
+    },
+    {
+        "img":"C:/projects/react-js/swastik-finance/src/assets/savings.jpg",
+        "title":"Savings Accounts",
+        "description":"Secure your financial future with a Swastik Finance Savings Account – where smart saving meets peace of mind, ensuring your money grows steadily with every deposit."
+    },
+    {
+        "img":"C:/projects/react-js/swastik-finance/src/assets/current.jpg",
+        "title":"Current Account",
+        "description":"Experience seamless business transactions with a Swastik Finance Current Account – tailored for efficiency and designed to support your day-to-day financial operations effortlessly."
+    },
+    {
+        "img":"C:/projects/react-js/swastik-finance/src/assets/img3.jpg",
+        "title":"Mutual Funds",
+        "description":"Invest with confidence through Swastik Finance Mutual Funds – where your financial goals meet expert fund management, unlocking a path to potential growth and wealth creation."
+    },
+    {
+        "img":"C:/projects/react-js/swastik-finance/src/assets/savings.jpg",
+        "title":"Fixed Deposits",
+        "description":"Grow your savings steadily with Swastik Finance Fixed Deposits. Enjoy the assurance of guaranteed returns."
+    },
+    {
+        "img":"C:/projects/react-js/swastik-finance/src/assets/net-banking.jpg",
+        "title":"net Banking",
+        "description":"Experience banking at your fingertips with Swastik Finance Net Banking – where convenience meets security."
+    }
+]

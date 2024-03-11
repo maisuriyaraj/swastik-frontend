@@ -1,0 +1,85 @@
+{
+    "banking_job_positions": [
+      {
+        "position": "Bank Teller",
+        "value": "bank_teller"
+      },
+      {
+        "position": "Customer Service Representative",
+        "value": "customer_service_representative"
+      },
+      {
+        "position": "Loan Officer",
+        "value": "loan_officer"
+      },
+      {
+        "position": "Branch Manager",
+        "value": "branch_manager"
+      },
+      {
+        "position": "Financial Advisor",
+        "value": "financial_advisor"
+      },
+      {
+        "position": "Relationship Manager",
+        "value": "relationship_manager"
+      },
+      {
+        "position": "Operations Manager",
+        "value": "operations_manager"
+      },
+      {
+        "position": "Credit Analyst",
+        "value": "credit_analyst"
+      },
+      {
+        "position": "Risk Manager",
+        "value": "risk_manager"
+      },
+      {
+        "position": "Compliance Officer",
+        "value": "compliance_officer"
+      },
+      {
+        "position": "Investment Banker",
+        "value": "investment_banker"
+      },
+      {
+        "position": "Treasury Analyst",
+        "value": "treasury_analyst"
+      },
+      {
+        "position": "Mortgage Consultant",
+        "value": "mortgage_consultant"
+      },
+      {
+        "position": "Wealth Manager",
+        "value": "wealth_manager"
+      },
+      {
+        "position": "Financial Analyst",
+        "value": "financial_analyst"
+      },
+      {
+        "position": "Fraud Investigator",
+        "value": "fraud_investigator"
+      },
+      {
+        "position": "Business Development Officer",
+        "value": "business_development_officer"
+      },
+      {
+        "position": "Private Banker",
+        "value": "private_banker"
+      },
+      {
+        "position": "Asset Manager",
+        "value": "asset_manager"
+      },
+      {
+        "position": "Internal Auditor",
+        "value": "internal_auditor"
+      }
+    ]
+  }
+  

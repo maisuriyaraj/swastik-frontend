@@ -1,0 +1,45 @@
+{
+    "bank_departments": [
+      {
+        "dept_name": "Accounting",
+        "value": "accounting"
+      },
+      {
+        "dept_name": "Risk Management",
+        "value": "risk_management"
+      },
+      {
+        "dept_name": "Customer Relations",
+        "value": "customer_relations"
+      },
+      {
+        "dept_name": "Marketing",
+        "value": "marketing"
+      },
+      {
+        "dept_name": "Credit Analysis",
+        "value": "credit_analysis"
+      },
+      {
+        "dept_name": "Wealth Management",
+        "value": "wealth_management"
+      },
+      {
+        "dept_name": "Legal",
+        "value": "legal"
+      },
+      {
+        "dept_name": "Operations",
+        "value": "operations"
+      },
+      {
+        "dept_name": "Compliance",
+        "value": "compliance"
+      },
+      {
+        "dept_name": "Technology",
+        "value": "technology"
+      }
+    ]
+  }
+  

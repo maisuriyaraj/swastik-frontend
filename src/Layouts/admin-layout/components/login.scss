@@ -1,0 +1,136 @@
+#login {
+  background-image: url("../../../assets/login-back2.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .btn-login {
+    background-color: #3a6088;
+    color: #fff;
+  }
+  .errorMsg {
+    font-weight: 600;
+    color: rgb(204, 0, 0);
+  }
+  
+  .formBox {
+    width: 35%;
+    padding: 20px;
+    background: #ffffff;
+  }
+
+  .form-style input,
+  .form-style button {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ebebeb;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+
+  .captcha-container {
+    position: relative;
+  }
+
+  .captcha-input {
+    height: 50px;
+    font-size: 1em;
+    border: 1px solid #ebebeb;
+    border-radius: 5px;
+    padding: 10px;
+  }
+
+  .captcha-refresh {
+    background-color: #007bff;
+    color: #ebebeb;
+    height: 50px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  #captchaText {
+    font-size: 1.2em;
+    color: red;
+    font-weight: bold;
+    background-color: #e6e6e6;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+  }
+
+  .form-control {
+    padding: 10px !important;
+    border: 1px solid #ccc !important;
+  }
+  .form-control:focus {
+    border: 2px solid #007bff !important;
+    outline: none !important;
+  }
+
+  .errBox{
+    border: 2px solid rgb(204, 0, 0) !important;
+  }
+
+  .error-field {
+    border: 2px solid rgb(204, 0, 0) !important;
+  }
+
+  .eyeIcon {
+    position: absolute;
+    top: 46px;
+    right: 12px;
+  }
+
+  @media (max-width: 768px) {
+    section {
+      flex-direction: column;
+      height: auto;
+    }
+
+    section .imgBox {
+      flex: none;
+      height: 180px;
+    }
+
+    section .contentBox {
+      flex: none;
+      width: 100%;
+    }
+
+    .formBox {
+      width: 100%;
+      max-width: none;
+    }
+  }
+
+  @media screen and (max-width:991px) {
+    .formBox {
+      width: 80%;
+      max-width: none;
+    }
+  }
+
+  @media screen and (max-width:1200px) {
+    .formBox {
+      width: 60%;
+      max-width: none;
+    }
+  }
+
+  .forgot-password {
+    display: flex;
+    justify-content: space-between;
+    margin-top: -15px;
+  }
+
+  .forgot-password a {
+    text-decoration: none;
+    color: #007bff;
+    align-items: center;
+  }
+}

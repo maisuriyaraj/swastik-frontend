@@ -1,0 +1,487 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+.loader {
+  display: block;
+  text-align: center;
+  margin-top: 10%;
+  z-index: 9999;
+  background-size: cover;
+}
+
+@media screen and (max-width: 991px) {
+  .loader {
+    margin-top: 50%;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .loader {
+    margin-top: 80%;
+  }
+}
+
+#header {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 0 !important;
+  border-bottom: 1px solid #e8e8e8;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  cursor: pointer;
+  z-index: 111;
+
+  .nav-item {
+    padding: 8px 10px;
+    font-weight: 600;
+  }
+
+  .nav-link {
+    color: black;
+  }
+
+  .nav-item:hover .nav-link {
+    color: #00a6ff;
+  }
+
+  .m-logo {
+    display: none;
+  }
+
+  @media screen and (max-width: 991px) {
+    background-color: #fff;
+    padding: 8px;
+
+    .navbar-public {
+      position: absolute;
+      top: 0px;
+      z-index: 1;
+      left: 0;
+      background-color: #fff;
+      width: 0px;
+      border-right: 1px solid #e8e8e8;
+      transform-origin: left;
+      padding: 0;
+      height: 100vh;
+      transition: width 0.1s ease;
+    }
+
+    .navbar-nav {
+      display: none;
+      margin-top: 40px;
+    }
+
+    .nav-item {
+      border-bottom: 1px solid #e7e7e7;
+    }
+
+    .nav-item:last-child {
+      border-bottom: none;
+    }
+
+    .m-logo {
+      display: none;
+    }
+
+    .m-logo a {
+      padding: 10px;
+    }
+  }
+}
+
+#home-section {
+  .container-fluid {
+    height: 100vh;
+    position: relative;
+    background-color: #000;
+  }
+
+  .content {
+    position: absolute;
+    top: 30%;
+    bottom: 50px;
+    left: 7%;
+    color: #f1f1f1;
+    width: 100%;
+    padding: 20px;
+
+    .hero-title {
+      font-size: 70px;
+      font-family: "Montserrat", sans-serif;
+    }
+
+    .hero-tags h3 {
+      font-size: 40px;
+    }
+
+    .hero-btns {
+      padding: 15px 25px;
+      margin-left: 10px;
+      border: none;
+      border-radius: 10px;
+      font-family: "Montserrat", sans-serif;
+    }
+  }
+
+  @media screen and (max-width: 991px) {
+    .content {
+      top: 20%;
+
+      .hero-title {
+        font-size: 70px;
+      }
+
+      .hero-btns {
+        display: none;
+      }
+    }
+  }
+
+  .videos {
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+    overflow: hidden;
+  }
+
+  video {
+    width: 100%;
+    height: 100%;
+    /* Set the height to 100% or adjust as needed */
+    object-fit: cover;
+  }
+}
+
+#about-section {
+  .hero-title {
+    font-family: "Montserrat", sans-serif;
+    font-size: 50px;
+    margin-bottom: 25px;
+  }
+
+  .btn-learn {
+    margin-top: 10px;
+    padding: 10px 11px;
+    text-transform: capitalize;
+  }
+
+  @media screen and (max-width: 991px) {
+    .hero-title {
+      font-size: 35px;
+    }
+  }
+
+  .card-tit {
+    font-family: "Montserrat", sans-serif;
+  }
+
+  .card-txt {
+    font-family: "Montserrat", sans-serif;
+  }
+}
+
+#support {
+  .hero-title {
+    font-family: "Montserrat", sans-serif;
+    font-size: 50px;
+    margin-bottom: 25px;
+  }
+
+  @media screen and (max-width: 991px) {
+    .hero-title {
+      font-size: 35px;
+    }
+  }
+
+  .faq-txt {
+    font-family: "Montserrat", sans-serif;
+  }
+}
+
+#loanProgram {
+  background-color: #1c4082;
+  padding: 50px;
+  overflow: hidden;
+
+  .hero-title {
+    font-family: "Montserrat", sans-serif;
+    font-size: 50px;
+    color: #fff;
+    margin-bottom: 25px;
+  }
+
+  .process-img {
+    border: none;
+    border-radius: 10px;
+    transform: scale(1.3);
+  }
+
+  p {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 200;
+  }
+
+  .process-title {
+    color: #fff;
+    font-size: 30px;
+  }
+
+  .btn-apply-now {
+    padding: 20px 50px;
+    border: none;
+    border-radius: 10px;
+    background-color: #ffd600;
+    color: #1c4082;
+    font-size: 20px;
+    font-weight: 600;
+    font-family: "Montserrat", sans-serif !important;
+  }
+
+  @media screen and (max-width: 991px) {
+    .process-img {
+      transform: scale(0.8);
+    }
+  }
+}
+
+#footer {
+  background-color: #1c4082;
+  color: white;
+  border-top-left-radius: 60px;
+
+  // border-top-right-radius: 30px;
+  .nav-link {
+    color: #fff !important;
+  }
+}
+
+#login {
+  background-image: url("../../assets/login-back2.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .errBox {
+    border: 2px solid rgb(204, 0, 0) !important;
+  }
+
+  #generated-captcha {
+    text-decoration: line-through;
+    font-weight: bold;
+    text-align: center;
+    font-size: 20px;
+    background-color: #ede7f6;
+    border-radius: 6px;
+    border: none;
+    padding: 6px;
+    outline: none;
+    color: #1d1d1d;
+  }
+
+  .btn-login {
+    background-color: #3a6088;
+    color: #fff;
+  }
+
+  .errorMsg {
+    font-weight: 600;
+    color: rgb(204, 0, 0);
+  }
+
+  .formBox {
+    width: 30%;
+    padding: 20px;
+    background: #ffffff;
+    height: 605px;
+  }
+
+  .form-style input,
+  .form-style button {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ebebeb;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+
+  .captcha-container {
+    position: relative;
+  }
+
+  .captcha-input {
+    height: 50px;
+    font-size: 1em;
+    border: 1px solid #ebebeb;
+    border-radius: 5px;
+    padding: 10px;
+  }
+
+  .captcha-refresh {
+    background-color: #007bff;
+    color: #ebebeb;
+    height: 50px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  #captchaText {
+    font-size: 1.2em;
+    color: red;
+    font-weight: bold;
+    background-color: #e6e6e6;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+  }
+
+  .form-control {
+    padding: 10px !important;
+    border: 1px solid #ccc !important;
+  }
+
+  .form-control:focus {
+    border: 2px solid #007bff !important;
+    outline: none !important;
+  }
+
+  .error-field {
+    border: 2px solid rgb(204, 0, 0) !important;
+
+  }
+
+  @media (max-width: 768px) {
+    section {
+      flex-direction: column;
+      height: auto;
+    }
+
+    section .imgBox {
+      flex: none;
+      height: 180px;
+    }
+
+    section .contentBox {
+      flex: none;
+      width: 100%;
+    }
+
+    .formBox {
+      width: 100% !important;
+      max-width: none;
+    }
+  }
+
+  .forgot-password {
+    display: flex;
+    justify-content: space-between;
+    margin-top: -15px;
+  }
+
+  .forgot-password a {
+    text-decoration: none;
+    color: #007bff;
+    align-items: center;
+  }
+}
+
+#uploadDocsPage {
+
+  .container {
+    height: 100vh;
+    width: 100%;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    background-color: #fcfcfc;
+  }
+
+  .card {
+    border-radius: 10px;
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.3);
+    width: 100%;
+    height: auto;
+    background-color: #ffffff;
+    padding: 10px 30px 40px;
+  }
+  .main-div{
+    width: 80%;
+  }
+
+  .card h3 {
+    font-size: 22px;
+    font-weight: 600;
+
+  }
+
+  .drop_box {
+    margin: 10px 0;
+    padding: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border: 3px dotted #a3a3a3;
+    border-radius: 5px;
+    transition: 0.3s;
+  }
+
+  .drop_box:hover{
+    border: 3px dotted #1976d2;
+  }
+
+  .drop_box h4 {
+    font-size: 16px;
+    font-weight: 400;
+    color: #2e2e2e;
+  }
+
+  .preview-div{
+    width: 100%;
+    iframe{
+      height: 500px;
+    }
+  }
+
+  .drop_box p {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-size: 12px;
+    color: #a3a3a3;
+  }
+
+  .btn1 {
+    padding: 10px 20px;
+    border: none;
+    outline: none;
+    transition: 0.3s;
+  }
+
+  .form input {
+    margin: 10px 0;
+    width: 100%;
+    background-color: #e2e2e2;
+    border: none;
+    outline: none;
+    padding: 12px 20px;
+    border-radius: 4px;
+  }
+
+}
+
+#forgotPAss{
+  .errBox {
+    border: 2px solid rgb(204, 0, 0) !important;
+  }
+  .errorMsg {
+    font-weight: 600;
+    color: rgb(204, 0, 0);
+  }
+}
