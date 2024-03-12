@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import SideBar from './sidebar';
 import { postRequest } from '../../../utils/axios-service';
-import { Button, Card, CardActions, CardContent, Table, TextField, Typography } from '@mui/material';
+import { Button, Card, CardActions, CardContent, Icon, Table, TextField, Typography } from '@mui/material';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
@@ -277,6 +277,33 @@ class Dashboard extends Component {
                         <CardActions>
                           <Button size="small" onClick={() => this.handleOpenModal(true)}>Add Funds</Button>
                           {this.state.walletDetails.walletBalance  &&  <Button size="small">Pay</Button>}
+                        </CardActions>
+                      </Card>
+                    </div>
+                    <div className="col-md-6">
+                      <Card
+                        className="my-2"
+                        style={{
+                          width: '18rem'
+                        }}
+                      >
+                        <CardContent>
+                          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                            <Icon sx={{fontSize:'50px'}}>person_icon</Icon>
+                          </Typography>
+                          <Typography variant="h5" component="div">
+                            Pay Contacts
+                          </Typography>
+                          <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                            
+                          </Typography>
+                          <Typography variant="body2">
+                            <br />
+                            {'"a benevolent smile"'}
+                          </Typography>
+                        </CardContent>
+                        <CardActions>
+                            <Link to={'/user/chat'}><Button >View Contacts</Button></Link>
                         </CardActions>
                       </Card>
                     </div>
