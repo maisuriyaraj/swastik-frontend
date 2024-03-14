@@ -190,7 +190,7 @@ class Dashboard extends Component {
                                   {row.date_of_transection}
                                 </TableCell>
                                 <TableCell align="right">{row.deposit_amount == 0 ? `-${row.withdraw_amount}` : `+${row.deposit_amount}`   }</TableCell>
-                                <TableCell align="right" className={row.deposit_amount == 0 ? `text-danger` : `text-success`  }>{row.deposit_amount == 0 ? `Debited` : `Cradited`   }</TableCell>
+                                <TableCell align="right" className={row.deposit_amount == 0 ? `text-danger` : `text-success`  }>{row.deposit_amount == 0 ? `Debited` : `Credited`   }</TableCell>
                               </TableRow>
                             ))}
                           </TableBody>

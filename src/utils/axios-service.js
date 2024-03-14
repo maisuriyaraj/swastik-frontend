@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 
-export const BASE_URL = "https://a19c-2402-a00-162-82d3-69af-c112-c9c-e410.ngrok-free.app"
+export const BASE_URL = "https://b93e-2402-a00-162-82d3-81c-4888-9ac0-77c3.ngrok-free.app"
 export function getRequest(url, payload={},headers={}) {
     return new Promise((resolve, reject) => {
         axios.get(BASE_URL +url ,payload,{headers:headers}).then(res => {

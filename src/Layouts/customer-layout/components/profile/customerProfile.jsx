@@ -25,6 +25,7 @@ class CustomerProfile extends Component {
 
   componentDidMount() {
     this.props.loadData({ userID: this.state.userID, token: this.state.token });
+    this.loadCustomersDocuments();
   }
 
   componentDidUpdate(preValue) {
@@ -34,6 +35,19 @@ class CustomerProfile extends Component {
       })
     }
   }
+
+  loadCustomersDocuments() {
+    postRequest("/api/getCustomerDocs", { id: this.state.userID }, { Authorization: this.state.token.trim() }).then((resp) => {
+      if (resp.data.status !== false && resp.data.code !== 200) {
+        this.setState({ customerDocs: resp.data.data })
+      } else {
+        this.setState({ customerDocs: [] })
+      }
+    }).catch(err => {
+      console.log(err)
+    })
+  }
+
 
   setActiveTab(tab) {
     this.setState({ activeTab: tab });
@@ -66,7 +80,7 @@ class CustomerProfile extends Component {
                     Loan Details
                   </a>
                   <a className={`nav-link ${activeTab == 5 ? 'active' : ''} ms-0`} onClick={() => this.setActiveTab(5)} style={{ cursor: 'pointer' }}>
-                    Transection Details
+                    Fixed Deposit Details
                   </a>
                 </nav>
               </div>
@@ -77,7 +91,7 @@ class CustomerProfile extends Component {
             <hr className="mt-0 mb-4" />
             {activeTab == 1 && <BankProfile userDetails={this.state.userDetails} />}
             {activeTab == 2 && <AccountDetails userDetails={this.state.userDetails} />}
-            {activeTab == 3 && <DocumentsManagement />}
+            {activeTab == 3 && <DocumentsManagement customerDocs={this.state.customerDocs} />}
           </div>
 
         </div>

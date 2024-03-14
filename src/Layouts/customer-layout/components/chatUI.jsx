@@ -38,7 +38,8 @@ export default class ChatUI extends Component {
             let myMessages = this.state.messageList;
             myMessages.push(message)
             this.setState({messageList:myMessages});
-            this.getUserMessages(this.state.selectedUser)
+            this.getUserMessages(this.state.selectedUser._id);
+            this.scrollToBottom();
         })
 
         socket.on("error", (error) => {
@@ -65,7 +66,7 @@ export default class ChatUI extends Component {
             if (Array.isArray(resp.data.data)) {
                 let data = resp.data.data
                 let newData = data.filter((x) => (
-                    x.username !== this.state.user
+                    x.username._id !== this.state.user
                 ))
                 this.setState({ userList: newData });
             } else {
@@ -90,13 +91,20 @@ export default class ChatUI extends Component {
     }
     selecteUser(user) {
         this.setState({ selectedUser: user });
-        this.getUserMessages(user)
+        this.getUserMessages(user._id)
     }
 
 
     sendMessage = (e) => {
         e.preventDefault();
-        this.state.socket.emit('privateMessage', { sender: this.state.user, receiver: this.state.selectedUser, message: this.state.message })
+        this.state.socket.emit('privateMessage', { sender: this.state.user, receiver: this.state.selectedUser, message: this.state.message });
+        this.setState({message:""});
+        this.scrollToBottom();
+    }
+
+    scrollToBottom() {
+        var messageContainer = document.getElementById("messageContainer");
+        messageContainer.scrollTop = messageContainer.scrollHeight;
     }
     render() {
         const { userList, selectedUser,messageList ,user} = this.state;
@@ -109,13 +117,13 @@ export default class ChatUI extends Component {
                             <div className='contact-list'>
                                 <ul>
                                     {userList.map((x, i) => (
-                                        <li key={i} className={x.username === selectedUser ? 'activeChat' : ''} onClick={() => this.selecteUser(x.username)}>
+                                        <li key={i} className={x.username._id === selectedUser._id ? 'activeChat' : ''} onClick={() => this.selecteUser(x.username)}>
                                             <div className='d-flex align-items-center'>
                                                 <div>
                                                     <img src={male} width={30} alt="" />
                                                 </div>
                                                 <div className='mx-3'>
-                                                    <span>User {x.username}</span>
+                                                    <span>{x.username.first_name + " " + x.username.last_name}</span>
                                                 </div>
                                             </div>
                                         </li>
@@ -130,7 +138,7 @@ export default class ChatUI extends Component {
                             {selectedUser !== "" && <section className="msger" id='chatui'>
                                 <header className="msger-header">
                                     <div className="msger-header-title">
-                                        <i className="fas fa-comment-alt" /> User Name
+                                        <i className="fas fa-comment-alt" /> {selectedUser.first_name + "  " + selectedUser.last_name}
                                     </div>
                                     <div className="msger-header-options">
                                         <span>
@@ -138,7 +146,7 @@ export default class ChatUI extends Component {
                                         </span>
                                     </div>
                                 </header>
-                                <main className="msger-chat">
+                                <main className="msger-chat" id='messageContainer'>
                                     {
                                     messageList.map((x) => (
                                             <div className={x.sender === user ? "msg right-msg" : "msg left-msg"}>
@@ -151,8 +159,8 @@ export default class ChatUI extends Component {
                                                 />
                                                 <div className="msg-bubble">
                                                     <div className="msg-info">
-                                                        <div className="msg-info-name">BOT</div>
-                                                        <div className="msg-info-time">12:45</div>
+                                                        <div className="msg-info-name"></div>
+                                                        <div className="msg-info-time">{x.msgTime || ''}</div>
                                                     </div>
                                                     <div className="msg-text">
                                                         {x.message}
