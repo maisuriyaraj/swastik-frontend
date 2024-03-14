@@ -1,25 +1,121 @@
 import React, { Component } from 'react';
 import './chatUi.scss';
+import logo from '../../../assets/swastik_logo.png'
 import male from '../../../assets/male.png'
 import { Button } from '@mui/material';
+import io from 'socket.io-client';
+import axios from 'axios';
 
 export default class ChatUI extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            socket: null,
+            user: JSON.parse(sessionStorage.getItem('user')),
+            message: "",
+            selectedUser: "",
+            messageList: [],
+            userList: [],
+        };
+    }
+
+    componentDidMount() {
+        const socket = io.connect("http://localhost:3001/");
+
+        socket.on("connection", (socket) => {
+            console.log("Connected to server");
+
+        });
+        socket.emit('join', this.state.user);
+
+        socket.on("disconnect", () => {
+            console.log("Disconnected from server");
+        });
+
+        socket.on("privateMessage", (message) => {
+            console.log(message);
+            let myMessages = this.state.messageList;
+            myMessages.push(message)
+            this.setState({messageList:myMessages});
+            this.getUserMessages(this.state.selectedUser)
+        })
+
+        socket.on("error", (error) => {
+            console.error("Socket error:", error);
+        });
+
+        this.setState({ socket: socket });
+        this.getUserList();
+    }
+
+    componentDidUpdate() {
+
+    }
+
+    componentWillUnmount() {
+        const { socket } = this.state;
+        if (socket) {
+            socket.disconnect();
+        }
+    }
+
+    getUserList() {
+        axios.get('http://localhost:3001/users').then(resp => {
+            if (Array.isArray(resp.data.data)) {
+                let data = resp.data.data
+                let newData = data.filter((x) => (
+                    x.username !== this.state.user
+                ))
+                this.setState({ userList: newData });
+            } else {
+                console.error('API response is not an array:', resp.data);
+            }
+        }).catch(err => {
+            console.log(err)
+        })
+    };
+
+    getUserMessages(user) {
+        axios.get(`http://localhost:3001/userMessages/${user}/${this.state.user}`).then(resp => {
+            console.log(resp.data.data);
+            this.setState({ messageList: resp.data.data || []})
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
+    handleOnChangeMessage(e) {
+        this.setState({ message: e.target.value })
+    }
+    selecteUser(user) {
+        this.setState({ selectedUser: user });
+        this.getUserMessages(user)
+    }
+
+
+    sendMessage = (e) => {
+        e.preventDefault();
+        this.state.socket.emit('privateMessage', { sender: this.state.user, receiver: this.state.selectedUser, message: this.state.message })
+    }
     render() {
+        const { userList, selectedUser,messageList ,user} = this.state;
         return (
+
             <>
                 <div className='container-fluid px-0 overflow-hidden'>
                     <div className='row'>
-                        <div className="col-md-3">
+                        <div className="col-md-3 px-0">
                             <div className='contact-list'>
                                 <ul>
-                                    {[1,2,3,4,5,].map((x) => (
-                                        <li>
+                                    {userList.map((x, i) => (
+                                        <li key={i} className={x.username === selectedUser ? 'activeChat' : ''} onClick={() => this.selecteUser(x.username)}>
                                             <div className='d-flex align-items-center'>
                                                 <div>
                                                     <img src={male} width={30} alt="" />
                                                 </div>
                                                 <div className='mx-3'>
-                                                    <span>User {x}</span>
+                                                    <span>User {x.username}</span>
                                                 </div>
                                             </div>
                                         </li>
@@ -27,8 +123,11 @@ export default class ChatUI extends Component {
                                 </ul>
                             </div>
                         </div>
-                        <div className="col-md-9">
-                            <section className="msger" id='chatui'>
+                        <div className="col-md-9 px-0">
+                            {selectedUser === "" && <div className='d-flex justify-content-center align-items-center' style={{ height: '100vh' }}>
+                                <img src={logo} width={400} alt="" />
+                            </div>}
+                            {selectedUser !== "" && <section className="msger" id='chatui'>
                                 <header className="msger-header">
                                     <div className="msger-header-title">
                                         <i className="fas fa-comment-alt" /> User Name
@@ -40,25 +139,29 @@ export default class ChatUI extends Component {
                                     </div>
                                 </header>
                                 <main className="msger-chat">
-                                    <div className="msg left-msg">
-                                        <div
-                                            className="msg-img"
-                                            style={{
-                                                backgroundImage:
-                                                    "url(https://image.flaticon.com/icons/svg/327/327779.svg)"
-                                            }}
-                                        />
-                                        <div className="msg-bubble">
-                                            <div className="msg-info">
-                                                <div className="msg-info-name">BOT</div>
-                                                <div className="msg-info-time">12:45</div>
+                                    {
+                                    messageList.map((x) => (
+                                            <div className={x.sender === user ? "msg right-msg" : "msg left-msg"}>
+                                                <div
+                                                    className="msg-img"
+                                                    style={{
+                                                        backgroundImage:
+                                                            "url(https://image.flaticon.com/icons/svg/327/327779.svg)"
+                                                    }}
+                                                />
+                                                <div className="msg-bubble">
+                                                    <div className="msg-info">
+                                                        <div className="msg-info-name">BOT</div>
+                                                        <div className="msg-info-time">12:45</div>
+                                                    </div>
+                                                    <div className="msg-text">
+                                                        {x.message}
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div className="msg-text">
-                                                Hi, welcome to SimpleChat! Go ahead and send me a message. 😄
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="msg right-msg">
+                                    ))
+                                    }
+                                    {/* {<div className="msg right-msg">
                                         <div
                                             className="msg-img"
                                             style={{
@@ -73,22 +176,24 @@ export default class ChatUI extends Component {
                                             </div>
                                             <div className="msg-text">You can change your name in JS section!</div>
                                         </div>
-                                    </div>
+                                    </div>} */}
                                 </main>
                                 <form className="msger-inputarea">
                                     <input
                                         type="text"
                                         className="msger-input"
+                                        value={this.state.message}
+                                        onChange={(e) => this.handleOnChangeMessage(e)}
                                         placeholder="Enter your message..."
                                     />
-                                    <Button type="button" className="msger-send-btn">
+                                    <Button type="button" onClick={(e) => this.sendMessage(e)} className="msger-send-btn">
                                         Send
                                     </Button>
                                     <button type="button" className="msger-send-btn">
                                         Pay
                                     </button>
                                 </form>
-                            </section>
+                            </section>}
                         </div>
                     </div>
                 </div>
