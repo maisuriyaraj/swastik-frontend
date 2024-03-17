@@ -9,6 +9,7 @@ import AddStaff from './components/addStaff';
 import SideBar from './components/sideBar';
 import ViewCustomersInfo from './components/viewCustomers/viewCustomersInfo';
 import AdminActivities from './components/adminActivities';
+import BankStaff from './components/bankStaff';
 
 
 export default function AdminLayout() {
@@ -29,6 +30,7 @@ export default function AdminLayout() {
         <ProtectedRoute path="/addstaff" Component={AddStaff} />
         <ProtectedRoute path="/customer" Component={ViewCustomersInfo} />
         <ProtectedRoute path="/activities" Component={AdminActivities} />
+        <ProtectedRoute path="/bank-staff" Component={BankStaff} />
 
       </>}
       {loading && <Loader loading={loading} className="loader" />}

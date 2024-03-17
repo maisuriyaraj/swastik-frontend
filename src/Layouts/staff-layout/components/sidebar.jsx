@@ -18,9 +18,13 @@ export default function SideBar({ userData }) {
   // })
   
   const [openSidebar,setSidebar] = useState(false);
+  const [activePath ,setActivePath] = useState("");
+
 
   useEffect(()=>{
     // dispatch(getAllData());
+    setActivePath(window.location.pathname);
+
   },[])
   const openSideBar = () => {
     let div = document.getElementById('sidebar');
@@ -64,39 +68,19 @@ export default function SideBar({ userData }) {
         <hr />
         <ul className="nav nav-pills flex-column mb-auto">
           <li>
-            <Link to={"/staff/dashboard"} className="nav-link active">
+            <Link to={"/staff/dashboard"} className={`nav-link text-light  ${activePath == '/staff/dashboard' ? 'active' : ''}`}>
 
               Dashboard
             </Link>
           </li>
           <li>
-            <Link to={''} className="nav-link">
+            <Link to={''} className={`nav-link text-light  ${activePath == '/staff/dashboard' ? 'active' : ''}`}>
               Fixed Deposite
             </Link>
           </li>
           <li>
-            <a href="#" className="nav-link">
-              E-pass Book
-            </a>
-          </li>
-          <li>
-            <a href="#" className="nav-link">
+            <a href="#" className={`nav-link text-light  ${activePath == '/staff/dashboard' ? 'active' : ''}`}>
               Loans
-            </a>
-          </li>
-          <li>
-            <a href="#" className="nav-link">
-              Online Transection Details
-            </a>
-          </li>
-          <li>
-            <a href="#" className="nav-link">
-              Profile Details
-            </a>
-          </li>
-          <li>
-            <a href="#" className="nav-link">
-              Net Banking
             </a>
           </li>
         </ul>

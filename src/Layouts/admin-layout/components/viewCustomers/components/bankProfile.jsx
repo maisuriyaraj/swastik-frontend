@@ -15,6 +15,8 @@ export default function BankProfile({ userDetails }) {
     const [gender, setGender] = useState(userDetails.gender);
     const [phone, setPhone] = useState("");
     const [dob, setDob] = useState("");
+    const BASE_URL = "http://localhost:5000/"
+
     const [loading, setLoading] = useState(true); // Changed initial state to true
 
     useEffect(() => {
@@ -43,15 +45,9 @@ export default function BankProfile({ userDetails }) {
                             <div className="card-body text-center">
                                 <img
                                     className="img-account-profile rounded-circle mb-2"
-                                    src={userDetails.gender === 'male' ? male : female} // Check gender directly
+                                    src={userDetails.customer_profile ? BASE_URL + userDetails.customer_profile :  (userDetails.gender === 'male' ? male : female)} // Check gender directly
                                     alt=""
                                 />
-                                <div className="small font-italic text-muted mb-4">
-                                    JPG or PNG no larger than 5 MB
-                                </div>
-                                <button className="btn btn-primary" type="button">
-                                    Upload new image
-                                </button>
                             </div>
                         </div>
                     </div>

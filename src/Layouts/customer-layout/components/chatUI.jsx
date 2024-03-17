@@ -2,9 +2,13 @@ import React, { Component } from 'react';
 import './chatUi.scss';
 import logo from '../../../assets/swastik_logo.png'
 import male from '../../../assets/male.png'
-import { Button } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import io from 'socket.io-client';
 import axios from 'axios';
+import { Modal, ModalBody, ModalHeader } from 'reactstrap';
+import { toast } from 'react-toastify';
+import { postRequest } from '../../../utils/axios-service';
+import Loader from '../../../utils/react-loader';
 
 export default class ChatUI extends Component {
     constructor(props) {
@@ -13,10 +17,16 @@ export default class ChatUI extends Component {
         this.state = {
             socket: null,
             user: JSON.parse(sessionStorage.getItem('user')),
+            token: JSON.parse(sessionStorage.getItem('userToken')),
             message: "",
             selectedUser: "",
             messageList: [],
             userList: [],
+            pay_msg: "",
+            loader: false,
+            payOpen: false,
+            amount: 0.00,
+            mpin: ""
         };
     }
 
@@ -37,9 +47,8 @@ export default class ChatUI extends Component {
             console.log(message);
             let myMessages = this.state.messageList;
             myMessages.push(message)
-            this.setState({messageList:myMessages});
+            this.setState({ messageList: myMessages });
             this.getUserMessages(this.state.selectedUser._id);
-            this.scrollToBottom();
         })
 
         socket.on("error", (error) => {
@@ -80,7 +89,7 @@ export default class ChatUI extends Component {
     getUserMessages(user) {
         axios.get(`http://localhost:3001/userMessages/${user}/${this.state.user}`).then(resp => {
             console.log(resp.data.data);
-            this.setState({ messageList: resp.data.data || []})
+            this.setState({ messageList: resp.data.data || [] })
         }).catch(err => {
             console.log(err)
         })
@@ -97,17 +106,43 @@ export default class ChatUI extends Component {
 
     sendMessage = (e) => {
         e.preventDefault();
-        this.state.socket.emit('privateMessage', { sender: this.state.user, receiver: this.state.selectedUser, message: this.state.message });
-        this.setState({message:""});
-        this.scrollToBottom();
+        if (this.state.message !== "") {
+            this.state.socket.emit('privateMessage', { sender: this.state.user, receiver: this.state.selectedUser, message: this.state.message });
+            this.setState({ message: "" });
+        } else {
+            toast.error("Please Type an Message");
+        }
     }
 
-    scrollToBottom() {
-        var messageContainer = document.getElementById("messageContainer");
-        messageContainer.scrollTop = messageContainer.scrollHeight;
+    handleOpenPayModal() {
+        this.setState({ payOpen: true });
+    }
+
+    handlePayment(e) {
+        e.preventDefault();
+        const payload = {
+            payer_id: this.state.user, payer_mpin: this.state.mpin, payee_id: this.state.selectedUser._id, message: this.state.pay_msg, amount: this.state.amount
+        }
+        postRequest("/api/onlineTransfer", payload, { 'Authorization': this.state.token }).then((resp) => {
+            if (resp.data.status == true && resp.data.code == 201) {
+                const message = {
+                    amount: this.state.amount
+                }
+                this.setState({loader:true})
+                setTimeout(() => {
+                    this.state.socket.emit('privateMessage', { sender: this.state.user, receiver: this.state.selectedUser, message: this.state.pay_msg , is_payment: true, amount: this.state.amount });
+                    this.setState({ payOpen: false, amount: 0, mpin: "",loader:false });
+                    toast.success(resp.data.message);
+                }, 3000);
+            } else {
+                toast.error(resp.data.message);
+            }
+        }).catch(err => {
+            console.log(err)
+        })
     }
     render() {
-        const { userList, selectedUser,messageList ,user} = this.state;
+        const { userList, selectedUser, payOpen, loader, amount, mpin, pay_msg, messageList, user } = this.state;
         return (
 
             <>
@@ -125,6 +160,9 @@ export default class ChatUI extends Component {
                                                 <div className='mx-3'>
                                                     <span>{x.username.first_name + " " + x.username.last_name}</span>
                                                 </div>
+                                                {x.is_active && <div className='mx-3'>
+                                                    <span className='text-success'>Active</span>
+                                                </div>}
                                             </div>
                                         </li>
                                     ))}
@@ -148,13 +186,13 @@ export default class ChatUI extends Component {
                                 </header>
                                 <main className="msger-chat" id='messageContainer'>
                                     {
-                                    messageList.map((x) => (
-                                            <div className={x.sender === user ? "msg right-msg" : "msg left-msg"}>
+                                        messageList.map((x) => (<>
+                                            {!x.is_payment && <div className={x.sender === user ? "msg right-msg" : "msg left-msg"}>
                                                 <div
                                                     className="msg-img"
                                                     style={{
                                                         backgroundImage:
-                                                            "url(https://image.flaticon.com/icons/svg/327/327779.svg)"
+                                                            `url(${male})`
                                                     }}
                                                 />
                                                 <div className="msg-bubble">
@@ -166,8 +204,28 @@ export default class ChatUI extends Component {
                                                         {x.message}
                                                     </div>
                                                 </div>
-                                            </div>
-                                    ))
+                                            </div>}
+                                            {x.is_payment && <div className={x.sender === user ? "msg right-msg" : "msg left-msg"}>
+                                                <div
+                                                    className="msg-img"
+                                                    style={{
+                                                        backgroundImage:
+                                                            `url(${male})`
+                                                    }}
+                                                />
+                                                <div className="msg-bubble">
+                                                    <div className="msg-info">
+                                                        <div className="msg-info-name"></div>
+                                                        <div className="msg-info-time">{x.msgTime || ''}</div>
+                                                    </div>
+                                                    <div class="msg-text">
+                                                        <div><h1 style={{ fontSize: '30px' }}>₹{x.paid_amount}</h1></div>
+                                                        <div><p style={{ fontSize: '14px' }}>{x.message}</p></div>
+                                                    </div>
+                                                </div>
+                                            </div>}
+                                        </>
+                                        ))
                                     }
                                     {/* {<div className="msg right-msg">
                                         <div
@@ -197,15 +255,38 @@ export default class ChatUI extends Component {
                                     <Button type="button" onClick={(e) => this.sendMessage(e)} className="msger-send-btn">
                                         Send
                                     </Button>
-                                    <button type="button" className="msger-send-btn">
+                                    <Button type="button" onClick={() => this.setState({ payOpen: true })} className="msger-send-btn">
                                         Pay
-                                    </button>
+                                    </Button>
                                 </form>
                             </section>}
                         </div>
                     </div>
-                </div>
 
+                    <Modal isOpen={payOpen} size='md' centered>
+                        <ModalHeader>Payment to : {selectedUser.first_name + "  " + selectedUser.last_name}</ModalHeader>
+                        <ModalBody>
+                            {!loader && <form onSubmit={(e) => this.handlePayment(e)}>
+                                <div className="row">
+                                    <div className="col-md-12 mt-2 mb-3">
+                                        <TextField id="balance" value={amount} onChange={(e) => this.setState({ amount: e.target.value })} type='number' label="Amount" fullWidth variant="filled" required />
+                                    </div>
+                                    <div className="col-md-12 mt-2 mb-3">
+                                        <TextField id="pay_msg" value={pay_msg} onChange={(e) => this.setState({ pay_msg: e.target.value })} type='text' label="Message" fullWidth variant="filled" required />
+                                    </div>
+                                    <div className="col-md-12 mt-2 mb-3">
+                                        <TextField id="mpin" type='password' value={mpin} onChange={(e) => this.setState({ mpin: e.target.value })} label="MPIN" fullWidth variant="filled" required />
+                                    </div>
+                                </div>
+                                <Button variant='contained' type='submit' className='mt-3 mx-1' color='primary' size='large'>Pay</Button>
+                                <Button variant='contained' type='button' className='mt-3 mx-1' color='warning' size="large" onClick={() => this.setState({ payOpen: false })}>Cancle</Button>
+                            </form>}
+
+                            {loader && <Loader loading={loader} className="loader" />}
+
+                        </ModalBody>
+                    </Modal>
+                </div>
             </>
         )
     }

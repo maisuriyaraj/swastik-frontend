@@ -5,16 +5,22 @@ import female from "../../../../../assets/female.png";
 import Loader from '../../../../../utils/react-loader';
 import { Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material';
 import moment from 'moment';
+import { postRequest } from '../../../../../utils/axios-service';
 
 export default function BankProfile({ userDetails }) {
     const [readonly, setReadOnly] = useState(true);
+    const BASE_URL = "http://localhost:5000/"
     const [fname, setFname] = useState("");
+    const user = JSON.parse(sessionStorage.getItem('user'));
+    const token = JSON.parse(sessionStorage.getItem('userToken'));
     const [lname, setLname] = useState("");
     const [address, setAddress] = useState("");
+    const [customer_profile, setCustomerProfile] = useState("")
     const [email, setEmail] = useState("");
     const [gender, setGender] = useState(userDetails.gender);
     const [phone, setPhone] = useState("");
     const [dob, setDob] = useState("");
+    const [profile, setProfile] = useState();
     const [loading, setLoading] = useState(true); // Changed initial state to true
 
     useEffect(() => {
@@ -27,11 +33,36 @@ export default function BankProfile({ userDetails }) {
                 setGender(userDetails.gender);
                 setAddress(userDetails.address || "");
                 setPhone(userDetails.phone || "");
+                setCustomerProfile(userDetails.customer_profile || "");
                 setDob(moment(userDetails.dob).format('DD-MM-YYYY') || ""); // Set dob based on userDetails
                 setLoading(false); // Set loading to false after userDetails are fetched
+                console.log(BASE_URL + "/" + customer_profile)
             }, 3000);
         }
     }, [userDetails]);
+
+    function uploadProfilePicture(e) {
+        if (e.target.files[0]) {
+            setProfile(e.target.files[0]);
+            console.log(profile);
+            let formData = new FormData();
+            formData.append('customer_profile',e.target.files[0])
+            postRequest(`/api/profile/${user}`,formData,{'Authorization':token}).then((resp) =>{
+                if(resp.data.status === true){
+                    window.location.reload();
+                }
+            }).catch(err => {
+                console.log(err)
+            }) 
+        }
+    }
+
+    const handleBrowseFiles = () => {
+        let input = document.getElementById('customer_profile');
+        if (input !== null) {
+            input.click();
+        }
+    }
 
     return (
         <>
@@ -43,15 +74,19 @@ export default function BankProfile({ userDetails }) {
                             <div className="card-body text-center">
                                 <img
                                     className="img-account-profile rounded-circle mb-2"
-                                    src={userDetails.gender === 'male' ? male : female} // Check gender directly
+                                    src={customer_profile ? BASE_URL + customer_profile : male} // Check gender directly
                                     alt=""
                                 />
                                 <div className="small font-italic text-muted mb-4">
                                     JPG or PNG no larger than 5 MB
                                 </div>
-                                <button className="btn btn-primary" type="button">
-                                    Upload new image
+                                <button className="btn btn-primary" type="button" onClick={handleBrowseFiles}>
+                                    {customer_profile ? 'Change Profile' : 'Upload new image'}
                                 </button>
+                                <form style={{ display: 'none' }} encType="multipart/form-data">
+                                    <input type="file" id='customer_profile' accept="image/*"
+                                        onChange={(e) => uploadProfilePicture(e)} name='customer_profile' />
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -75,7 +110,7 @@ export default function BankProfile({ userDetails }) {
                                                 readOnly
                                                 placeholder="Enter your first name"
                                                 onChange={(e) => setFname(e.target.value)}
-                                                
+
                                             />
                                         </div>
                                         <div className="col-md-6">
@@ -90,7 +125,7 @@ export default function BankProfile({ userDetails }) {
                                                 readOnly
                                                 onChange={(e) => setLname(e.target.value)}
                                                 placeholder="Enter your last name"
-                                               
+
                                             />
                                         </div>
                                         <div className="col-md-6">
@@ -104,9 +139,9 @@ export default function BankProfile({ userDetails }) {
                                                     value={gender}
                                                     onChange={(e) => setGender(e.target.value)}
                                                 >
-                                                    <FormControlLabel value="female" control={<Radio disabled checked={gender=='female'}   />} label="Female" />
-                                                    <FormControlLabel value="male" control={<Radio disabled checked={gender=='male'}   />} label="Male" />
-                                                    <FormControlLabel value="other" control={<Radio disabled checked={gender=='others'}   />} label="Other" />
+                                                    <FormControlLabel value="female" control={<Radio disabled checked={gender == 'female'} />} label="Female" />
+                                                    <FormControlLabel value="male" control={<Radio disabled checked={gender == 'male'} />} label="Male" />
+                                                    <FormControlLabel value="other" control={<Radio disabled checked={gender == 'others'} />} label="Other" />
                                                 </RadioGroup>
                                             </FormControl>
                                         </div>
@@ -177,7 +212,7 @@ export default function BankProfile({ userDetails }) {
                     </div>
                 </div>
 
-                
+
             )}
             {loading && <Loader loading={loading} className="loader" />}
         </>

@@ -13,6 +13,8 @@ import  {getAllData } from '../../../redux/slices/customerActions';
 export default function SideBar({ userData }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [activePath ,setActivePath] = useState("");
+
   // const data = useSelector((state) => {
   //   return state.customers
   // })
@@ -20,6 +22,8 @@ export default function SideBar({ userData }) {
   const [openSidebar,setSidebar] = useState(false);
 
   useEffect(()=>{
+    setActivePath(window.location.pathname);
+
     // dispatch(getAllData());
   },[])
   const openSideBar = () => {
@@ -64,40 +68,25 @@ export default function SideBar({ userData }) {
         <hr />
         <ul className="nav nav-pills flex-column mb-auto">
           <li>
-            <Link to={'/user/dashboard'} className="nav-link active">
+            <Link to={'/user/dashboard'} className={`nav-link text-dark  ${activePath == '/user/dashboard' ? 'active' : ''}`}>
 
               Dashboard
             </Link>
           </li>
           <li>
-            <Link to={''} className="nav-link">
+            <Link to={'/user/fixed-deposit'} className={`nav-link text-dark  ${activePath == '/user/fixed-deposit' ? 'active' : ''}`}>
               Fixed Deposite
             </Link>
           </li>
           <li>
-            <Link to={'/user/e-passbook'} className="nav-link">
+            <Link to={'/user/e-passbook'} className={`nav-link text-dark  ${activePath == '/user/e-passbook' ? 'active' : ''}`}>
               E-pass Book
             </Link>
           </li>
           <li>
-            <a href="#" className="nav-link">
+            <Link to={'/user/loans'} className={`nav-link text-dark  ${activePath == '/user/loans' ? 'active' : ''}`}>
               Loans
-            </a>
-          </li>
-          <li>
-            <a href="#" className="nav-link">
-              Online Transection Details
-            </a>
-          </li>
-          <li>
-            <a href="#" className="nav-link">
-              Profile Details
-            </a>
-          </li>
-          <li>
-            <a href="#" className="nav-link">
-              Net Banking
-            </a>
+            </Link>
           </li>
         </ul>
         <hr />

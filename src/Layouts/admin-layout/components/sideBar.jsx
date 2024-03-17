@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import logo from '../../../assets/swastik_logo.png'
 
 import './adminDashboard.scss'
 import { putRequest } from '../../../utils/axios-service';
@@ -8,8 +9,10 @@ import { putRequest } from '../../../utils/axios-service';
 export default function SideBar() {
     const navigate = useNavigate();
     const [admin,setAdmin] = useState("");
+    const [activePath ,setActivePath] = useState("");
     useEffect(()=>{
-        setAdmin(JSON.parse(sessionStorage.getItem("Admin")) || "")
+        setAdmin(JSON.parse(sessionStorage.getItem("Admin")) || "");
+        setActivePath(window.location.pathname);
     },[]);
     const logOut = () => {
       const payload = {
@@ -35,31 +38,31 @@ export default function SideBar() {
             href="/"
             className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none"
           >
-            <span className="fs-4">Sidebar</span>
+            <div className="text-center"><img src={logo} width={80} alt="" /></div>
           </a>
           <hr />
           <ul className="nav nav-pills flex-column mb-auto">
             <li>
-              <Link to={'/admin/dashboard'} className="nav-link active">
+              <Link to={'/admin/dashboard'} className={`nav-link text-light  ${activePath == '/admin/dashboard' ? 'active' : ''}`}>
 
                 Dashboard
               </Link>
             </li>
             <li>
-              <Link to={'/admin/addstaff'} className="nav-link text-white">
+              <Link to={'/admin/addstaff'} className={`nav-link text-light  ${activePath == '/admin/addstaff' ? 'active' : ''}`}>
                 Add Staff
               </Link>
             </li>
             <li>
-              <a href="#" className="nav-link text-white">
-                Payment Request
-              </a>
+              <Link to={'/admin/bank-staff'} className={`nav-link  text-light ${activePath == '/admin/bank-staff' ? 'active' : ''}`}>
+                Bank Staff
+              </Link>
             </li>
-            <li>
-              <a href="#" className="nav-link text-white">
+            {/* <li>
+              <Link href="#" className="nav-link text-white">
                 Typography
-              </a>
-            </li>
+              </Link>
+            </li> */}
           </ul>
           <hr />
           <div className="dropdown">

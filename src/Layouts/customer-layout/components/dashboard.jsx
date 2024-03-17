@@ -25,7 +25,7 @@ class Dashboard extends Component {
       token: "",
       loading: false,
       walletResponse: {},
-      userTransections:[],
+      userTransections: [],
       AddWalletOpen: false,
       apiResponse: {},
       walletDetails: {},
@@ -71,20 +71,20 @@ class Dashboard extends Component {
 
   loadDataTransection = async (userID, token) => {
     try {
-        const payload = {
-            customer_id: userID
-        };
-        const response = await postRequest('/api/getTransectionsCustomer', payload, { 'Authorization': token.trim() });
-        if(response.data.status === true){
-            this.setState({userTransections : response.data.data.transections || []})
-        }else{
-          this.setState({userTransections : []})
+      const payload = {
+        customer_id: userID
+      };
+      const response = await postRequest('/api/getTransectionsCustomer', payload, { 'Authorization': token.trim() });
+      if (response.data.status === true) {
+        this.setState({ userTransections: response.data.data.transections || [] })
+      } else {
+        this.setState({ userTransections: [] })
 
-        }
+      }
     } catch (error) {
-        console.error('Error fetching transections:', error);
+      console.error('Error fetching transections:', error);
     }
-}
+  }
 
   loadWalletDetails(userID, token) {
     const payload = {
@@ -126,9 +126,9 @@ class Dashboard extends Component {
           this.loadData(userID, token);
           this.loadWalletDetails(userID, token);
           this.setState({ AddWalletOpen: false, mpin: "", amount: "" });
-          toast.success(resp.data.message,{position:'bottom-right'});
+          toast.success(resp.data.message, { position: 'bottom-right' });
         } else {
-          toast.error(resp.data.message,{position:'bottom-right'});
+          toast.error(resp.data.message, { position: 'bottom-right' });
         }
       }).catch(err => {
         toast.error(err);
@@ -151,19 +151,14 @@ class Dashboard extends Component {
             <div className='postheader w-100'>
               <div className='container postheaderDiv'>
                 <div>
-                  <span className='postheader-item'>My Dashboard</span>
-                </div>
-                <div className='right-div'>
-                  <span className='postheader-item'>Notification(0)</span>
-                  <span className='postheader-item'>Pay&Transfer</span>
-                  <span className='postheader-item'>Buy Prepaid</span>
+                  <span className='postheader-item'>My Dashboard - {userDetails.first_name + " " + userDetails.last_name}</span>
                 </div>
               </div>
             </div>
             <div className='container main-div'>
               <div className="row">
                 <div className="col-md-6 mt-2">
-                  <Card sx={{ minWidth: '100%',height:'413px',overflow:'hidden' }}>
+                  <Card sx={{ minWidth: '100%', height: '413px', overflow: 'hidden' }}>
                     <CardContent>
                       <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                         Available balance
@@ -171,7 +166,7 @@ class Dashboard extends Component {
                       <Typography sx={{ fontSize: 25 }} color="black" gutterBottom>
                         Rs.{userDetails.current_balance || "0"}
                       </Typography>
-                      <TableContainer component={Paper} sx={{height:'265px',overflow:'hidden'}}>
+                      <TableContainer component={Paper} sx={{ height: '265px', overflow: 'hidden' }}>
                         <Table sx={{ minWidth: '100%' }} size="small" aria-label="a dense table">
                           <TableHead>
                             <TableRow>
@@ -189,8 +184,8 @@ class Dashboard extends Component {
                                 <TableCell component="th" scope="row">
                                   {row.date_of_transection}
                                 </TableCell>
-                                <TableCell align="right">{row.deposit_amount == 0 ? `-${row.withdraw_amount}` : `+${row.deposit_amount}`   }</TableCell>
-                                <TableCell align="right" className={row.deposit_amount == 0 ? `text-danger` : `text-success`  }>{row.deposit_amount == 0 ? `Debited` : `Credited`   }</TableCell>
+                                <TableCell align="right">{row.deposit_amount == 0 ? `-${row.withdraw_amount}` : `+${row.deposit_amount}`}</TableCell>
+                                <TableCell align="right" className={row.deposit_amount == 0 ? `text-danger` : `text-success`}>{row.deposit_amount == 0 ? `Debited` : `Credited`}</TableCell>
                               </TableRow>
                             ))}
                           </TableBody>
@@ -228,7 +223,7 @@ class Dashboard extends Component {
                       <Card
                         className="my-2"
                         style={{
-                          width: '18rem'
+                          width: '100%'
                         }}
                       >
                         <CardContent>
@@ -248,7 +243,7 @@ class Dashboard extends Component {
                           </Typography>
                         </CardContent>
                         <CardActions>
-                          <Button size="small">More..</Button>
+                          <Button size="small">Apply For Fixed Deposit</Button>
                         </CardActions>
                       </Card>
                     </div>
@@ -256,7 +251,7 @@ class Dashboard extends Component {
                       <Card
                         className="my-2"
                         style={{
-                          width: '18rem'
+                          width: '100%'
                         }}
                       >
                         <CardContent>
@@ -276,7 +271,38 @@ class Dashboard extends Component {
                         </CardContent>
                         <CardActions>
                           <Button size="small" onClick={() => this.handleOpenModal(true)}>Add Funds</Button>
-                          {this.state.walletDetails.walletBalance  &&  <Button size="small">Pay</Button>}
+                          {this.state.walletDetails.walletBalance && <Button size="small">Pay</Button>}
+                        </CardActions>
+                      </Card>
+                    </div>
+                  </div>
+                </div>
+                <div className='col-lg-6 col-md-12'>
+                  <div className="row">
+                    <div className="col-md-6">
+                      <Card
+                        className="my-2"
+                        style={{
+                          width: '100%',
+                        }}
+                      >
+                        <CardContent>
+                          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                            Loans
+                          </Typography>
+                          <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                            Get a Loan at Low Interest
+                          </Typography>
+                          <Typography sx={{ mb: 1.1 ,height:'25px'}} component="div">
+                          </Typography>
+                          <Typography variant="body2">
+                            well meaning and kindly.
+                            <br />
+                            {'"a benevolent smile"'}
+                          </Typography>
+                        </CardContent>
+                        <CardActions>
+                          <Button size="small">Apply For Loan</Button>
                         </CardActions>
                       </Card>
                     </div>
@@ -284,18 +310,18 @@ class Dashboard extends Component {
                       <Card
                         className="my-2"
                         style={{
-                          width: '18rem'
+                          width: '100%'
                         }}
                       >
                         <CardContent>
                           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                            <Icon sx={{fontSize:'50px'}}>person_icon</Icon>
+                            <Icon sx={{ fontSize: '50px' }}>person_icon</Icon>
                           </Typography>
                           <Typography variant="h5" component="div">
                             Pay Contacts
                           </Typography>
                           <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                            
+
                           </Typography>
                           <Typography variant="body2">
                             <br />
@@ -303,7 +329,7 @@ class Dashboard extends Component {
                           </Typography>
                         </CardContent>
                         <CardActions>
-                            <Link to={'/user/chat'}><Button >View Contacts</Button></Link>
+                          <Link to={'/user/chat'}><Button >View Contacts</Button></Link>
                         </CardActions>
                       </Card>
                     </div>

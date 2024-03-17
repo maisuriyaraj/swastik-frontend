@@ -206,39 +206,66 @@
                     font-size: 14px;
                     font-weight: 600;
                     color: #3a6088;
-                cursor: pointer;
+                    cursor: pointer;
 
                 }
             }
         }
     }
-    
-    .offers-card{
+
+    .offers-card {
         padding: 10px;
         box-shadow: none !important;
         border: 1px solid #3a6088;
         border-radius: 10px;
     }
 
-    
-  .form-control {
-    padding: 10px !important;
-    border: 1px solid #ccc !important;
-  }
-  .form-control:focus {
-    border: 2px solid #007bff !important;
-    outline: none !important;
-  }
+
+    .form-control {
+        padding: 10px !important;
+        border: 1px solid #ccc !important;
+    }
+
+    .form-control:focus {
+        border: 2px solid #007bff !important;
+        outline: none !important;
+    }
 
 
-    
+
 }
 
-#transectionCustomer{
+#transectionCustomer {
     height: 90vh;
     overflow: hidden;
-    .table-div{
+
+    .table-div {
         height: 70vh;
         overflow: auto;
+    }
+}
+
+#fixedDeposit {
+
+    margin-bottom: 100px;
+    /* Scroll Bar by RITIK  */
+    ::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
+        background-color: #F5F5F5 !important;
+        opacity: 0 !important;
+    }
+
+    ::-webkit-scrollbar {
+        width: 12px;
+        background-color: #F5F5F5 !important;
+        opacity: 0 !important;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+        background-color: #ffffff !important;
+        opacity: 0 !important;
     }
 }

@@ -10,6 +10,8 @@ import { ProtectedRoute } from './protectedRoutes';
 import ChatUI from './components/chatUI';
 import CustomerProfile from './components/profile/customerProfile';
 import EPassbook from './components/ePassbook';
+import FixedDeposit from './components/fixedDeposit';
+import LoansDetails from './components/loans-details';
 
 export default function CustomerRoutes() {
   return (
@@ -22,6 +24,8 @@ export default function CustomerRoutes() {
       <ProtectedRoute path='/chat' exact  Component={ChatUI} />
       <ProtectedRoute path='/profile' exact  Component={CustomerProfile} />
       <ProtectedRoute path='/e-passbook' exact Component = {EPassbook} />
+      <ProtectedRoute path="/fixed-deposit" exact Component = {FixedDeposit} />
+      <ProtectedRoute path='/loans' exact Component = {LoansDetails} />
 
    </>
   )
