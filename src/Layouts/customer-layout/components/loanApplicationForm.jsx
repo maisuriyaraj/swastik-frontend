@@ -28,92 +28,148 @@ const MenuProps = {
   },
 };
 export default function LoanApplicationForm() {
-  const [poistion, setPosition] = useState("");
-  const [departMent, setDepartment] = useState("");
-  const [dob, setDob] = useState();
-  const [doj, setDoj] = useState();
-  const [fname, setFname] = useState();
-  const [lname, setLname] = useState();
-  const [uname, setUname] = useState();
-  const [email, setEmail] = useState();
-  const [salary, setSalary] = useState();
-  const [contact, setContact] = useState();
-  const [pin, setPin] = useState();
-  const [cpin, setCpin] = useState();
-  const [education, setEdu] = useState();
-  const [address, setAddress] = useState();
-  const [gender, setGender] = useState();
-  const token = JSON.parse(sessionStorage.getItem("AdminAuth")) || "";
-  const [loading, setLoading] = useState(false);
-  const [departMentList, setDeptList] = useState([])
 
+  const [dob, setDob] = useState();
+  const [coDob, setCoDOb] = useState();
+  const [loading, setLoading] = useState(false);
+  const [review, setReview] = useState(false);
+  const userID = JSON.parse(sessionStorage.getItem("user"))
+  const token = JSON.parse(sessionStorage.getItem("userToken"))
+  const [loanDetails, setDetails] = useState({
+    fname: "",
+    lname: "",
+    pan_number: "",
+    Account_no: "",
+    address: "",
+    contact: "",
+    email: "",
+    employe_status: "",
+    jobtitle: "",
+    monthlyIncome: "",
+    TotalAnnuaIncome: "",
+    otherSourcesofIncome: "",
+    monthlyExpence: "",
+    assets: "",
+    loanType: "",
+    loanAmountRequested: "",
+    purposeofLoan: "",
+    coFullname: "",
+    relation: ""
+  })
   const navigate = useNavigate();
 
   useEffect(() => {
-    getDepartmentLst();
-    console.log("COMPONENT RENDERED")
+    loadData();
   }, []);
-
-  function getDepartmentLst() {
-    postRequest("/api/getdepts", {}, { "Authorization": token }).then((resp) => {
-      setDeptList(resp.data.data);
-    }).catch(err => {
-      console.log(err);
-    })
+  function loadData() {
+    const payload = {
+      id: userID
+    };
+    try {
+      postRequest('/api/getCustomerDetails', payload, { 'Authorization': token }).then((resp) => {
+        setDetails({
+          fname:resp.data.data.first_name,
+          lname:resp.data.data.last_name,
+          pan_number:resp.data.data.pan_number,
+          Account_no:resp.data.data.account_number,
+          contact:resp.data.data.phone,
+          email:resp.data.data.email,
+          address:resp.data.data.address
+        });
+      }).catch((err) => {
+        console.log(err)
+      })
+    } catch (error) {
+      console.log(error)
+    }
   }
+
+
+  const handleChange = (field, e, val = null) => {
+    const { value } = e.target;
+    let updateVal = val !== null ? val : value
+    setDetails(prevState => ({
+      ...prevState,
+      [field]: updateVal
+    }));
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (cpin !== pin) {
-      toast.error("Pin Code Must be same")
-    } else {
-      const payload = {
-        first_name: fname,
-        last_name: lname,
-        user_name: uname,
-        password: cpin,
-        email: email,
-        position: poistion,
-        gender: gender,
-        dob: moment(dob.$d).format("YYYY-MM-DD"),
-        doj: moment(doj.$d).format("YYYY-MM-DD"),
-        salary: salary,
-        education: education,
-        dept_id: departMent,
-        address: address
+   if(review === true){
+    const payload = {
+      personalInformation: {
+        fullName: loanDetails.fname + " " + loanDetails.lname,
+        dateOfBirth: moment(dob.$d).format("DD/MM/YYYY"),
+        panCardNumber: loanDetails.pan_number,
+        customer_id: JSON.parse(sessionStorage.getItem("user")),
+        Account_no: loanDetails.Account_no,
+        address: loanDetails.address,
+        phoneNumber: loanDetails.contact,
+        email: loanDetails.email,
+        ApplicationDate: moment().format("DD/MM/YYYY"),
+      },
+      employmentInformation: {
+        employmentStatus: loanDetails.employe_status,
+        jobTitle: loanDetails.jobtitle,
+        grossMonthlyIncome: loanDetails.monthlyIncome
+      },
+      financialInformation: {
+        TotalAnnuaIncome: loanDetails.TotalAnnuaIncome,
+        otherSourcesOfIncome: loanDetails.otherSourcesofIncome,
+        monthlyHousingExpenses: loanDetails.monthlyExpence,
+        assets: loanDetails.assets,
+      },
+      loanDetails: {
+        loanType: loanDetails.loanType,
+        loanAmountRequested: loanDetails.loanAmountRequested,
+        purposeOfLoan: loanDetails.purposeofLoan,
+      },
+      coApplicantInformation: {
+        fullName: loanDetails.coFullname,
+        dateOfBirth: moment(coDob).format("DD/MM/YYYY"),
+        relationshipToPrimaryApplicant: loanDetails.relation,
       }
-      setLoading(true);
-      setAddress("");
-      setContact("");
-      setCpin("");
-      setDepartment("");
-      setDob();
-      setDoj();
-      setEdu("");
-      setEmail("");
-      setFname("");
-      setGender("");
-      setLname("");
-      setPin("");
-      setPosition("");
-      setSalary("");
-      setUname("");
-      setTimeout(() => {
-        postRequest("/api/add-staff", payload, { 'Authorization': token }).then((resp) => {
-
-          if (resp.data.status == false) {
-            toast(resp.data.message)
-          } else {
-            toast.success(resp.data.message);
-
-          }
-
-        }).catch((err) => {
-          toast.error(err);
-        })
-        setLoading(false)
-      }, 3000);
     }
+
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+
+    postRequest("/api/loanApplication",payload,{"Authorization":token}).then((response) => {
+      if(response.data.status == true){
+        toast.success(response.data.message);
+      }else{
+        toast.error(response.data.message);
+      }
+    }).catch((err) =>{
+      console.log(err);
+    })
+    setDetails({
+      fname: "",
+      lname: "",
+      dob: "",
+      pan_number: "",
+      Account_no: "",
+      address: "",
+      contact: "",
+      email: "",
+      employe_status: "",
+      jobtitle: "",
+      monthlyIncome: "",
+      TotalAnnuaIncome: "",
+      otherSourcesofIncome: "",
+      monthlyExpence: "",
+      assets: "",
+      loanType: "",
+      loanAmountRequested: "",
+      purposeofLoan: "",
+      coFullname: "",
+      coDob: "",
+      relation: ""
+    });
+   }
   }
 
   const handleBack = () => {
@@ -138,104 +194,29 @@ export default function LoanApplicationForm() {
               <div className="col-md-9 mt-2">
                 <div className="row">
                   <div className="col-md-6 form-group">
-                    {/* <label htmlFor="first_name">First Name:</label> */}
-                    <TextField label="First Name" value={fname} name='first_name' id='first_name' fullWidth onChange={(e) => setFname(e.target.value)} color="primary" required />
-                    {/* <ErrorMessage name='first_name' id='first_name' component={'div'} className='errorMsg' /> */}
+                    <TextField label="First Name" value={loanDetails.fname} name='first_name' id='first_name' fullWidth onChange={(e) => handleChange("fname", e)} color="primary" required />
                   </div>
                   <div className="col-md-6 form-group">
-                    {/* <label htmlFor="last_name">Last Name:</label> */}
-                    <TextField label="Last Name " value={lname} name='last_name' id='last_name' fullWidth color="primary" onChange={(e) => setLname(e.target.value)} required />
-                    {/* <ErrorMessage name='last_name' id='last_name' component={'div'} className='errorMsg' /> */}
+                    <TextField label="Last Name " value={loanDetails.lname} name='last_name' id='last_name' fullWidth color="primary" onChange={(e) => handleChange("lname", e)} required />
 
                   </div>
                   <div className="col-md-6 form-group">
-                    {/* <label htmlFor="email">Email:</label> */}
-                    <TextField label="Email " type='email' name='email' value={email} id='email' fullWidth color="primary" onChange={(e) => setEmail(e.target.value)} required />
-                    {/* <ErrorMessage name='email' id='email' component={'div'} className='errorMsg' /> */}
+                    <TextField label="Email " type='email' name='email' value={loanDetails.email} id='email' fullWidth color="primary" onChange={(e) => handleChange("email", e)} required />
                   </div>
                   <div className="col-md-6 form-group">
-                    {/* <label htmlFor="password">Password:</label> */}
-                    <TextField label="Contact" name='contact' id='contact' fullWidth value={contact} onChange={(e) => setContact(e.target.value)} color="primary" required />
-                    {/* <ErrorMessage name='contact' id='contact' component={'div'} className='errorMsg' /> */}
+                    <TextField label="Contact" name='contact' id='contact' fullWidth value={loanDetails.contact} onChange={(e) => handleChange("contact", e)} color="primary" required />
 
                   </div>
                   <div className="col-md-6 form-group">
-                    {/* <label htmlFor="password">Password:</label> */}
-                    <TextField label="Account Number" name='contact' id='contact' fullWidth value={contact} onChange={(e) => setContact(e.target.value)} color="primary" required />
-                    {/* <ErrorMessage name='contact' id='contact' component={'div'} className='errorMsg' /> */}
+                    <TextField label="Account Number" name='contact' id='contact' fullWidth value={loanDetails.Account_no} onChange={(e) => handleChange("Account_no", e)} color="primary" required />
 
                   </div>
 
-                  {/* <div className="col-md-6 form-group">
-                    <FormControl sx={{ m: 0 }} fullWidth>
-                      <InputLabel id="demo-simple-select-helper-label">Designation</InputLabel>
-                      <Select
-                        name='position'
-                        labelId="demo-simple-select-helper-label"
-                        id="position"
-                        value={poistion}
-                        label="Age"
-                        onChange={(e) => setPosition(e.target.value)}
-                        MenuProps={MenuProps}
-                        required>
-                       
-
-                          <MenuItem value={'ABC'} key={1} className='position-list'>
-                            <em>ABC</em>
-                          </MenuItem>
-
-                      </Select>
-                      <FormHelperText>It is Required Field</FormHelperText>
-
-                    </FormControl>
-
-                  </div> */}
-                  {/* <div className="col-md-6 form-group">
-                    <FormControl sx={{ m: 0 }} fullWidth>
-                      <InputLabel id="demo-simple-select-helper-label">Department</InputLabel>
-                      <Select
-                        name='department'
-                        labelId="demo-simple-select-helper-label"
-                        id="department"
-                        value={departMent}
-                        label="Age"
-                        onChange={(e) => setDepartment(e.target.value)}
-                        MenuProps={MenuProps}
-                        required>
-                        
-
-                          <MenuItem value={'1'} key={'1'} className='position-list'>
-                            <em>BAC</em>
-                          </MenuItem>
-                      </Select>
-                      <FormHelperText>It is Required Field</FormHelperText>
-
-                    </FormControl>
-
-                  </div> */}
                   <div className="col-md-6 form-group">
-                    {/* <label htmlFor="password">Password:</label> */}
-                    <TextField label="Pan Number " name='pan' id='pan' value={education} onChange={(e) => setEdu(e.target.value)} fullWidth color="primary" />
+                    <TextField label="Pan Number " name='pan' id='pan' value={loanDetails.pan_number} onChange={(e) => handleChange("pan_number", e)} fullWidth color="primary" />
                   </div>
-                  {/* <div className="col-md-6">
-                    <FormControl>
-                      <FormLabel id="demo-row-radio-buttons-group-label">Gender</FormLabel>
-                      <RadioGroup
-                        row
-                        aria-labelledby="demo-row-radio-buttons-group-label"
-                        name="gender"
-                        id='gender'
-                        value={gender}
-                        onChange={(e) => setGender(e.target.value)}
-                        required>
-                        <FormControlLabel value="male" control={<Radio />} label="Male" />
-                        <FormControlLabel value="female" control={<Radio />} label="Female" />
-                        <FormControlLabel value="other" control={<Radio />} label="Other" />
-                      </RadioGroup>
-                    </FormControl>
-                  </div> */}
                   <div className="col-md-12 form-group">
-                    <TextField label="Full Address" name='address' value={address} onChange={(e) => setAddress(e.target.value)} id='address' fullWidth color="primary" required />
+                    <TextField label="Full Address" name='address' value={loanDetails.address} onChange={(e) => handleChange("address", e)} id='address' fullWidth color="primary" required />
                   </div>
                 </div>
               </div>
@@ -247,18 +228,9 @@ export default function LoanApplicationForm() {
                       <DemoContainer components={['DatePicker']}>
                         <DatePicker value={dob} name='dob' id='dob' onChange={(newValue) => setDob(newValue)} required />
                       </DemoContainer>
-                      {/* <ErrorMessage name='dob' id='dob' component={'div'} className='errorMsg' /> */}
 
                     </LocalizationProvider>
 
-                  </div>
-                  <div className="col-md-12 mt-2">
-                    <Label>Date of Application </Label>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DemoContainer components={['DatePicker']}>
-                        <DatePicker value={doj} name='doj' id='doj' onChange={(newValue) => setDoj(newValue)} required />
-                      </DemoContainer>
-                    </LocalizationProvider>
                   </div>
                 </div>
               </div>
@@ -275,21 +247,21 @@ export default function LoanApplicationForm() {
                     name='position'
                     labelId="demo-simple-select-helper-label"
                     id="position"
-                    value={poistion}
+                    value={loanDetails.employe_status}
                     label="Employment Status"
-                    onChange={(e) => setPosition(e.target.value)}
+                    onChange={(e) => handleChange("employe_status", e)}
                     MenuProps={MenuProps}
                     required>
-                    <MenuItem value={'full-time'} key={1} className='position-list'>
+                    <MenuItem value={'full-time'} className='position-list'>
                       <em>ABC</em>
                     </MenuItem>
-                    <MenuItem value={'part-time'} key={1} className='position-list'>
+                    <MenuItem value={'part-time'} className='position-list'>
                       <em>ABC</em>
                     </MenuItem>
-                    <MenuItem value={'self-employed'} key={1} className='position-list'>
+                    <MenuItem value={'self-employed'} className='position-list'>
                       <em>ABC</em>
                     </MenuItem>
-                    <MenuItem value={'business'} key={1} className='position-list'>
+                    <MenuItem value={'business'} className='position-list'>
                       <em>ABC</em>
                     </MenuItem>
                   </Select>
@@ -297,47 +269,63 @@ export default function LoanApplicationForm() {
                 </FormControl>
               </div>
               <div className="col-md-6">
-                <TextField label="Job or Business Title" name='pan' id='pan' value={education} onChange={(e) => setEdu(e.target.value)} fullWidth color="primary" />
+                <TextField label="Job or Business Title" name='jobtitle' id='jobtitle' value={loanDetails.jobtitle} onChange={(e) => handleChange("jobtitle", e)} fullWidth color="primary" required />
               </div>
               <div className="col-md-6">
-                <TextField label="Gross Monthly Income" name='pan' id='pan' value={education} onChange={(e) => setEdu(e.target.value)} fullWidth color="primary" />
+                <TextField label="Gross Monthly Income" name='monthlyIncome' id='monthlyIncome' value={loanDetails.monthlyIncome} onChange={(e) => handleChange("monthlyIncome", e)} fullWidth color="primary" required />
               </div>
               <div className="col-md-6">
-                <TextField label="Annual Income" name='pan' id='pan' value={education} onChange={(e) => setEdu(e.target.value)} fullWidth color="primary" />
+                <TextField label="Annual Income" name='TotalAnnuaIncome' id='TotalAnnuaIncome' value={loanDetails.TotalAnnuaIncome} onChange={(e) => handleChange("TotalAnnuaIncome", e)} fullWidth color="primary" required />
+              </div>
+            </div>
+            <div className='row mt-5'>
+              <div className="col-md-12 mb-2 mt-2">
+                <h3>Financial Information</h3>
+              </div>
+              <hr />
+              <div className="col-md-6 mt-4">
+                <TextField label="Assets" name='jobtitle' id='jobtitle' value={loanDetails.assets} onChange={(e) => handleChange("assets", e)} fullWidth color="primary" required />
+              </div>
+              <div className="col-md-6 mt-4">
+                <TextField label="Monthly House Income" name='monthlyExpence' id='monthlyExpence' value={loanDetails.monthlyExpence} onChange={(e) => handleChange("monthlyExpence", e)} fullWidth color="primary" required />
+              </div>
+              <div className="col-md-6 mt-4">
+                <TextField label="Other Sources foir Income" name='otherSourcesOfIncome' id='otherSourcesOfIncome' value={loanDetails.otherSourcesofIncome} onChange={(e) => handleChange("otherSourcesofIncome", e)} fullWidth color="primary" required />
+                <FormHelperText>If You have No Information about you can Put "N/A"</FormHelperText>
               </div>
             </div>
             <div className="row mt-5">
               <div className="col-md-12">
                 <h3>Loan Details</h3>
               </div>
-<hr />
+              <hr />
               <div className="col-md-6">
                 <FormControl sx={{ m: 0 }} fullWidth>
                   <InputLabel id="demo-simple-select-helper-label">Loan Type</InputLabel>
                   <Select
-                    name='position'
+                    name='loanType'
                     labelId="demo-simple-select-helper-label"
-                    id="position"
-                    value={poistion}
+                    id="loanType"
+                    value={loanDetails.loanType}
                     label="Loan Type"
-                    onChange={(e) => setPosition(e.target.value)}
+                    onChange={(e) => handleChange("loanType", e)}
                     MenuProps={MenuProps}
                     required>
 
 
-                    <MenuItem value={'ABC'} key={1} className='position-list'>
+                    <MenuItem value={'ABC'} className='position-list'>
                       <em>Personal Loan</em>
                     </MenuItem>
 
-                    <MenuItem value={'ABC'} key={1} className='position-list'>
+                    <MenuItem value={'ABC'} className='position-list'>
                       <em>Car Loan</em>
                     </MenuItem>
 
-                    <MenuItem value={'ABC'} key={1} className='position-list'>
+                    <MenuItem value={'ABC'} className='position-list'>
                       <em>Home Loan</em>
                     </MenuItem>
 
-                    <MenuItem value={'ABC'} key={1} className='position-list'>
+                    <MenuItem value={'ABC'} className='position-list'>
                       <em>Gold Loan</em>
                     </MenuItem>
                   </Select>
@@ -346,10 +334,10 @@ export default function LoanApplicationForm() {
                 </FormControl>
               </div>
               <div className="col-md-6">
-                <TextField label="Requested Loan Amount " name='pan' id='pan' value={education} onChange={(e) => setEdu(e.target.value)} fullWidth color="primary" />
+                <TextField label="Requested Loan Amount " name='loanAmountRequested' id='loanAmountRequested' value={loanDetails.loanAmountRequested} onChange={(e) => handleChange("loanAmountRequested", e)} fullWidth color="primary" required />
               </div>
               <div className="col-md-6">
-                <TextField label="Purpose Of loan" name='pan' id='pan' value={education} onChange={(e) => setEdu(e.target.value)} fullWidth color="primary" />
+                <TextField label="Purpose Of loan" name='purposeofLoan' id='purposeofLoan' value={loanDetails.purposeofLoan} onChange={(e) => handleChange("purposeofLoan", e)} fullWidth color="primary" required />
               </div>
             </div>
 
@@ -359,26 +347,26 @@ export default function LoanApplicationForm() {
               </div>
               <hr />
               <div className="col-md-6">
-                <TextField label="Co-Applicant's Full Name" name='pan' id='pan' value={education} onChange={(e) => setEdu(e.target.value)} fullWidth color="primary" />
+                <TextField label="Co-Applicant's Full Name" name='coFullname' id='coFullname' value={loanDetails.coFullname} onChange={(e) => handleChange("coFullname", e)} fullWidth color="primary" required />
               </div>
-              <div className="col-md-12 mb-4">
+              <div className="col-md-12 mt-3 mb-4">
                 <Label>Co-Applicant's Date of Birth</Label>
                 <LocalizationProvider dateAdapter={AdapterDayjs} fullWidth>
                   <DemoContainer components={['DatePicker']}>
-                    <DatePicker value={dob} name='dob' id='dob' onChange={(newValue) => setDob(newValue)} required />
+                    <DatePicker value={coDob} name='dob' id='dob' onChange={(newValue) => setCoDOb(newValue)} required />
                   </DemoContainer>
                 </LocalizationProvider>
               </div>
               <div className="col-md-6">
-                <TextField label="Your Relation with the CO-Applicant" name='pan' id='pan' value={education} onChange={(e) => setEdu(e.target.value)} fullWidth color="primary" />
+                <TextField label="Your Relation with the CO-Applicant" name='relation' id='relation' value={loanDetails.relation} onChange={(e) => handleChange("relation", e)} fullWidth color="primary" required />
               </div>
             </div>
             <div className='row mt-5'>
               <div className="col-md-9">
-                <Button color='primary' variant="contained" size='lg' className='p-3' type='submit' fullWidth>Submit</Button>
+                <Button color='primary' variant="contained" size='lg' className='p-3' type='submit' fullWidth>Apply </Button>
               </div>
               <div className="col-md-3">
-                <Button color='secondary' variant='contained' size='large' className='p-3' type="button" fullWidth onClick={handleBack}>Back</Button>
+                <Button color='secondary' variant='contained' size='large' className='p-3' type="button" fullWidth onClick={handleBack}>Cancle</Button>
               </div>
             </div>
           </form>}

@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 
 export const ProtectedRoute = (props) => {
     const navigate = useNavigate();
-    const {Component,path} = props;
+    const {Component,path,data} = props;
     const showErrorToast = () =>{
         toast.error("You 're not Authorized")
     }
