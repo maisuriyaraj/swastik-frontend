@@ -4,6 +4,7 @@ import logo from "../../../assets/swastik_logo.png"
 import { postRequest } from '../../../utils/axios-service';
 import './customerLayout.scss'
 import { Button } from '@mui/material';
+import FdCalc from './fd-calc';
 
 export default function FixedDeposit() {
     // const [userID, setUSer] = useState(JSON.parse(sessionStorage.getItem('user')));
@@ -65,9 +66,10 @@ export default function FixedDeposit() {
                             </ul>
                         </div>
                     </div>
-                    <div class="text-center mt-4">
+                    <div class="text-center mt-4 mb-4">
                         <Button variant='contained' size='large' className='p-4 fs-5' >Get Started Today</Button>
                     </div>
+                    <FdCalc />
                 </div>
             </div>
         </>

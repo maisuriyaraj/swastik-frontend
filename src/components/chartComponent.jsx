@@ -54,38 +54,59 @@ const BarChart = ({current_balance,walletbalance,fixedeposit}) => {
         chartInstance.current.destroy();
       }
     };
-  }, []);
+  }, [current_balance,walletbalance,fixedeposit]);
 
   return <canvas ref={chartRef} />;
 };
 
-// const LineChart = () => {
-//   const chartRef = useRef(null);
-//   const chartInstance = useRef(null);
+const PieChart = ({data1,data2,label1,label2}) => {
+  const chartRef = useRef(null);
+  const chartInstance = useRef(null);
 
-//   useEffect(() => {
-//     if (!chartRef.current) return;
+  const chartData = {
+    // labels: ['Your Balance Sheet'],
+    datasets: [
+      {
+        label: label1,
+        data: [data1,data2],
+        backgroundColor: ['#96BFFF','#0070B9'],
+        borderColor: '#96BFFF',
+        borderWidth: 1,
+        
+      },
+      // {
+      //   label: label2,
+      //   data: [data2 || 0],
+      //   backgroundColor: '#0070B9',
+      //   borderColor: '#0070B9',
+      //   borderWidth: 1,
+      // }
+    ],
+  };
 
-//     // Destroy existing Chart instance if it exists
-//     if (chartInstance.current) {
-//       chartInstance.current.destroy();
-//     }
+  useEffect(() => {
+    if (!chartRef.current) return;
 
-//     const ctx = chartRef.current.getContext('2d');
-//     chartInstance.current = new Chart(ctx, {
-//       type: 'line',
-//       data: chartData,
-//     });
+    // Destroy existing Chart instance if it exists
+    if (chartInstance.current) {
+      chartInstance.current.destroy();
+    }
 
-//     // Cleanup function
-//     return () => {
-//       if (chartInstance.current) {
-//         chartInstance.current.destroy();
-//       }
-//     };
-//   }, []);
+    const ctx = chartRef.current.getContext('2d');
+    chartInstance.current = new Chart(ctx, {
+      type: 'doughnut',
+      data: chartData,
+    });
 
-//   return <canvas ref={chartRef} />;
-// };
+    // Cleanup function
+    return () => {
+      if (chartInstance.current) {
+        chartInstance.current.destroy();
+      }
+    };
+  }, [data1,data2,label1,label2]);
 
-export { BarChart };
+  return <canvas ref={chartRef} />;
+};
+
+export { BarChart,PieChart };

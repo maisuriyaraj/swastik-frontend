@@ -269,3 +269,54 @@
         opacity: 0 !important;
     }
 }
+
+#fd-calc{
+    // Fd.scss
+
+.fd-calculator {
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    margin-bottom: 20px;
+  }
+  
+  .fd-calculator h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .fd-calculator .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .fd-calculator label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .fd-calculator .form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  .fd-calculator .btn-primary {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  .fd-calculator .btn-primary:hover {
+    background-color: #0056b3;
+  }
+}

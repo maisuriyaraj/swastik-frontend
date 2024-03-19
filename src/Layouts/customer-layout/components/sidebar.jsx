@@ -8,38 +8,38 @@ import male from '../../../assets/male.png';
 import female from '../../../assets/female.png';
 import { Icon } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import  {getAllData } from '../../../redux/slices/customerActions';
+import { getAllData } from '../../../redux/slices/customerActions';
 
 export default function SideBar({ userData }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [activePath ,setActivePath] = useState("");
+  const [activePath, setActivePath] = useState("");
 
   // const data = useSelector((state) => {
   //   return state.customers
   // })
-  
-  const [openSidebar,setSidebar] = useState(false);
 
-  useEffect(()=>{
+  const [openSidebar, setSidebar] = useState(false);
+
+  useEffect(() => {
     setActivePath(window.location.pathname);
 
     // dispatch(getAllData());
-  },[])
+  }, [])
   const openSideBar = () => {
     let div = document.getElementById('sidebar');
-    if(div != null){
+    if (div != null) {
       setSidebar(true)
-      div.style.width="330px";
+      div.style.width = "330px";
       div.style.opacity = "1";
     }
   }
 
   const closeSidebar = () => {
     let div = document.getElementById('sidebar');
-    if(div != null){
+    if (div != null) {
       setSidebar(false)
-      div.style.width="0px";
+      div.style.width = "0px";
       div.style.opacity = "0";
     }
   }
@@ -65,68 +65,68 @@ export default function SideBar({ userData }) {
 
           <Icon className='close-icon' title={'Close'} onClick={() => closeSidebar()}>close_icon</Icon>
         </div>
-        <hr />
-        <ul className="nav nav-pills flex-column mb-auto">
-          <li>
-            <Link to={'/user/dashboard'} className={`nav-link text-dark  ${activePath == '/user/dashboard' ? 'active' : ''}`}>
-
-              Dashboard
-            </Link>
-          </li>
-          <li>
-            <Link to={'/user/fixed-deposit'} className={`nav-link text-dark  ${activePath == '/user/fixed-deposit' ? 'active' : ''}`}>
-              Fixed Deposite
-            </Link>
-          </li>
-          <li>
-            <Link to={'/user/e-passbook'} className={`nav-link text-dark  ${activePath == '/user/e-passbook' ? 'active' : ''}`}>
-              E-pass Book
-            </Link>
-          </li>
-          <li>
-            <Link to={'/user/loans'} className={`nav-link text-dark  ${activePath == '/user/loans' ? 'active' : ''}`}>
-              Loans
-            </Link>
-          </li>
-        </ul>
-        <hr />
-        <div className="dropdown">
-          <a
-            href="#"
-            className="d-flex align-items-center   text-decoration-none dropdown-toggle"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            <img
-              src={userData.gender == 'male' ? male : female}
-              alt=""
-              width={32}
-              height={32}
-              className="rounded-circle me-2"
-            />
-            <strong className='text-dark'>{userData.first_name + " " + userData.last_name}</strong>
-          </a>
-          <ul className="dropdown-menu dropdown-menu-dark text-small shadow">
+          <hr />
+          <ul className="nav nav-pills flex-column mb-auto">
             <li>
+              <Link to={'/user/dashboard'} className={`nav-link text-dark  ${activePath == '/user/dashboard' ? 'active' : ''}`}>
+
+                Dashboard
+              </Link>
+            </li>
+            <li>
+              <Link to={'/user/fixed-deposit'} className={`nav-link text-dark  ${activePath == '/user/fixed-deposit' ? 'active' : ''}`}>
+                Fixed Deposite
+              </Link>
+            </li>
+            <li>
+              <Link to={'/user/e-passbook'} className={`nav-link text-dark  ${activePath == '/user/e-passbook' ? 'active' : ''}`}>
+                E-pass Book
+              </Link>
+            </li>
+            <li>
+              <Link to={'/user/loans'} className={`nav-link text-dark  ${activePath == '/user/loans' ? 'active' : ''}`}>
+                Loans
+              </Link>
+            </li>
+          </ul>
+          <hr />
+          <div className="dropdown">
+            <a
+              href="#"
+              className="d-flex align-items-center   text-decoration-none dropdown-toggle"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <img
+                src={userData.gender == 'male' ? male : female}
+                alt=""
+                width={32}
+                height={32}
+                className="rounded-circle me-2"
+              />
+              <strong className='text-dark'>{userData.first_name + " " + userData.last_name}</strong>
+            </a>
+            <ul className="dropdown-menu dropdown-menu-dark text-small shadow">
+              <li>
                 <Link className="dropdown-item" to="/user/profile">
                   Profile
                 </Link>
               </li>
-            <li>
+              {/* <li>
               <Link className="dropdown-item" to="">
                 Add New Account
               </Link>
-            </li>
-            <li>
-              <hr className="dropdown-divider" />
-            </li>
-            <li>
-              <a className="dropdown-item" href="#" onClick={logOut}>
-                Sign out
-              </a>
-            </li>
-          </ul>
-        </div></>}
+            </li> */}
+              <li>
+                <hr className="dropdown-divider" />
+              </li>
+              <li>
+                <a className="dropdown-item" href="#" onClick={logOut}>
+                  Sign out
+                </a>
+              </li>
+            </ul>
+          </div></>}
       </div>
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container">

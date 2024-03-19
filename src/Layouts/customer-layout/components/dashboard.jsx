@@ -76,7 +76,7 @@ class Dashboard extends Component {
       };
       const response = await postRequest('/api/getTransectionsCustomer', payload, { 'Authorization': token.trim() });
       if (response.data.status === true) {
-        this.setState({ userTransections: response.data.data.transections || [] })
+        this.setState({ userTransections: response.data.data.transections.reverse() || [] })
       } else {
         this.setState({ userTransections: [] })
 
@@ -230,8 +230,7 @@ class Dashboard extends Component {
                           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                             Fixed Deposit
                           </Typography>
-                          <Typography variant="h5" component="div">
-                            Rs.0.00
+                          <Typography variant="h5" component="div" style={{height:'35px'}}>
                           </Typography>
                           <Typography sx={{ mb: 1.5 }} color="text.secondary">
                             Fixed Amount

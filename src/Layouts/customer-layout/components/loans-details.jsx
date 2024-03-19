@@ -3,8 +3,15 @@ import SideBar from './sidebar';
 import logo from "../../../assets/swastik_logo.png"
 import { postRequest } from '../../../utils/axios-service';
 import { Button } from '@mui/material';
+import EmiCalc from './emi-calc';
+import { useNavigate } from 'react-router-dom';
 
 export default function LoansDetails() {
+
+  const navigate = useNavigate();
+  const gotoApplyNow = () =>{
+    navigate('/user/apply-now');
+  }
   return (
     <div className='container-fluid px-0' id='fixedDeposit' style={{ marginTop: '100px' }}>
       {/* <SideBar userData={userDetails} /> */}
@@ -83,8 +90,10 @@ export default function LoansDetails() {
           </div>
         </div>
         <div className='w-100 mt-4 text-center'>
-          <Button variant='contained' size='large' className='p-4 fs-5' >Apply For Loan</Button>
+          <Button variant='contained' size='large' className='p-4 fs-5' onClick={gotoApplyNow}>Apply For Loan</Button>
         </div>
+
+        <EmiCalc />
       </div>
     </div>
   )

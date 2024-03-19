@@ -12,6 +12,7 @@ import CustomerProfile from './components/profile/customerProfile';
 import EPassbook from './components/ePassbook';
 import FixedDeposit from './components/fixedDeposit';
 import LoansDetails from './components/loans-details';
+import LoanApplicationForm from './components/loanApplicationForm';
 
 export default function CustomerRoutes() {
   return (
@@ -26,6 +27,7 @@ export default function CustomerRoutes() {
       <ProtectedRoute path='/e-passbook' exact Component = {EPassbook} />
       <ProtectedRoute path="/fixed-deposit" exact Component = {FixedDeposit} />
       <ProtectedRoute path='/loans' exact Component = {LoansDetails} />
+      <ProtectedRoute path='/apply-now' exact Component = {LoanApplicationForm} />
 
    </>
   )
