@@ -17,13 +17,13 @@ const BarChart = ({current_balance,walletbalance,fixedeposit}) => {
         borderWidth: 1,
         
       },
-      {
-        label: 'Fixed Deposits',
-        data: [fixedeposit || 0],
-        backgroundColor: '#0070B9',
-        borderColor: '#0070B9',
-        borderWidth: 1,
-      },
+      // {
+      //   label: 'Fixed Deposits',
+      //   data: [fixedeposit || 0],
+      //   backgroundColor: '#0070B9',
+      //   borderColor: '#0070B9',
+      //   borderWidth: 1,
+      // },
       {
         label: 'Wallet Balance',
         data: [walletbalance || 0],

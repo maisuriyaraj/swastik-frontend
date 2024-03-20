@@ -68,20 +68,15 @@ export default function SideBar({ userData }) {
         <hr />
         <ul className="nav nav-pills flex-column mb-auto">
           <li>
-            <Link to={"/staff/dashboard"} className={`nav-link text-light  ${activePath == '/staff/dashboard' ? 'active' : ''}`}>
+            <Link to={"/staff/dashboard"} className={`nav-link text-dark  ${activePath == '/staff/dashboard' ? 'active' : ''}`}>
 
               Dashboard
             </Link>
           </li>
           <li>
-            <Link to={''} className={`nav-link text-light  ${activePath == '/staff/dashboard' ? 'active' : ''}`}>
-              Fixed Deposite
-            </Link>
-          </li>
-          <li>
-            <a href="#" className={`nav-link text-light  ${activePath == '/staff/dashboard' ? 'active' : ''}`}>
+            <Link to={"/staff/loanList"} className={`nav-link text-dark  ${activePath == '/staff/loanList' ? 'active' : ''}`}>
               Loans
-            </a>
+            </Link>
           </li>
         </ul>
         <hr />
@@ -102,16 +97,16 @@ export default function SideBar({ userData }) {
             <strong className='text-dark'>{userData.first_name + " " + userData.last_name}</strong>
           </a>
           <ul className="dropdown-menu dropdown-menu-dark text-small shadow">
-            <li>
+            {/* <li>
                 <Link className="dropdown-item" to="/user/profile">
                   Profile
                 </Link>
-              </li>
-            <li>
+              </li> */}
+            {/* <li>
               <Link className="dropdown-item" to="">
                 Add New Account
               </Link>
-            </li>
+            </li> */}
             <li>
               <hr className="dropdown-divider" />
             </li>

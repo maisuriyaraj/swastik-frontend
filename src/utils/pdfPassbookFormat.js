@@ -74,7 +74,7 @@ export const getPasswbookPDF = (data,transectionData) => {
                         ["Date", "Description", "Credit", "Debit", "Available Balance"],
                         // [{text:`2024-03-10`}, {text:`Sale of Produce`}, {text : `500.00`}, {text:``}, {text:`500.00`}], // Example data row 1
                         ...transectionData.map((x) => {
-                            return [{text:x.date_of_transection},{text:x.deposit_amount==0  ?  'withdrawal' : 'Cradited'},{text:x.deposit_amount == 0 ? '-' : x.deposit_amount},{text:x.withdraw_amount == 0 ? '-' : x.withdraw_amount},{text:x.current_balance}]
+                            return [{text:x.date_of_transection},{text:x.deposit_amount==0  ?  'withdrawal' : 'Credited'},{text:x.deposit_amount == 0 ? '-' : x.deposit_amount},{text:x.withdraw_amount == 0 ? '-' : x.withdraw_amount},{text:x.current_balance}]
                         })
                     ]
                 }

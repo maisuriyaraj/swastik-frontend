@@ -2,14 +2,12 @@ import React, { Component } from 'react';
 import "./viewCustomersInfo.scss"
 import { postRequest } from '../../../../utils/axios-service';
 import BankProfile from './components/bankProfile';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Box from '@mui/material/Box';
 import AccountDetails from './components/accountDetails';
 import DocumentManagement from './components/documentManagement';
 import DepositWithdraw from './components/deposit-withdraw';
 import SideBar from '../sidebar';
 import CustomerTransections from './components/customerTransections';
+import LoanDetails from './components/loanDetails';
 
 class ViewCustomersInfo extends Component {
   constructor(props) {
@@ -23,6 +21,7 @@ class ViewCustomersInfo extends Component {
       customerDocs: {},
       userTransections:[],
       activeTab: 1,
+      loanDetails:[]
     };
   }
 
@@ -36,6 +35,22 @@ class ViewCustomersInfo extends Component {
     }).catch(err => {
       console.log(err)
     })
+  }
+
+  
+  async getAllLOanDetails() {
+    try {
+      const payload = {
+        customer_id: this.state.id
+      };
+      const response = await postRequest('/api/getLoanDetailsAdmin', payload, { 'Authorization': this.state.token.trim() });
+      if(response.data.status == true){
+        console.log(response.data.data || []);
+        this.setState({loanDetails:response.data.data || []})
+      } 
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   loadCustomerData() {
@@ -62,6 +77,7 @@ class ViewCustomersInfo extends Component {
     this.loadCustomerData();
     this.loadCustomersDocuments();
     this.loadDataTransection();
+    this.getAllLOanDetails();
   }
 
   setActiveTab(tab) {
@@ -100,6 +116,7 @@ class ViewCustomersInfo extends Component {
             {activeTab == 2 && <AccountDetails userDetails={this.state.userDetails} />}
             {activeTab == 3 && <DocumentManagement customerDocs={customerDocs} />}
             {activeTab == 4 && <DepositWithdraw userDetails={this.state.userDetails} />}
+            {activeTab == 5 && <LoanDetails loanDetails ={this.state.loanDetails} />}
             {activeTab == 6 && <CustomerTransections userDetails={this.state.userDetails} userTransections={userTransections} />}
           </div>
 

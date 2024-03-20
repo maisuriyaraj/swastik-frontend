@@ -9,6 +9,7 @@ import Login from './components/login';
 import StaffDashboard from './components/staffDashboard';
 import { ProtectedRoute } from './components/protectedRoutes';
 import ViewCustomersInfo from './components/viewCustomers/viewCustomersInfo';
+import LoanList from './components/loanLIst';
   
 
 export default function StaffLayoutRoutes() {
@@ -21,6 +22,7 @@ export default function StaffLayoutRoutes() {
 
     <ProtectedRoute path="/staff/dashboard" Component={StaffDashboard} />
     <ProtectedRoute path="/staff/customer" Component = {ViewCustomersInfo} />
+    <ProtectedRoute path="/staff/loanList" Component = {LoanList} />
 
     </>
   )

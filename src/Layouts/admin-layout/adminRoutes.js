@@ -11,6 +11,7 @@ import AdminDashboard from "./components/adminDashboard";
 import { isLoggedIn } from "../../utils/helperFunctions";
 import { ProtectedRoute } from "./protectedRoutes";
 import AddStaff from "./components/addStaff";
+import LoanList from "./components/loanLIst";
 
 const AdminRoutes = () => {
   return (
@@ -20,6 +21,7 @@ const AdminRoutes = () => {
       <Route path="/admin" element={<AdminLayout />} />
     </Routes>
       <ProtectedRoute path="/admin/dashboard" Component={AdminDashboard} />
+      <ProtectedRoute path="/admin/loans" Component = {LoanList} />
       </>
   );
 };

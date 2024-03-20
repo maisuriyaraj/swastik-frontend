@@ -9,12 +9,14 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { Label } from 'reactstrap';
+import { Label, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import moment from "moment"
 import { toast } from 'react-toastify';
 import { getRequest, postRequest } from '../../../utils/axios-service';
 import Loader from '../../../utils/react-loader';
 import { useNavigate } from 'react-router-dom';
+
+import reviewForm from "../../../assets/exclamation-gif.gif"
 
 
 const ITEM_HEIGHT = 48;
@@ -33,6 +35,7 @@ export default function LoanApplicationForm() {
   const [coDob, setCoDOb] = useState();
   const [loading, setLoading] = useState(false);
   const [review, setReview] = useState(false);
+  const [openReviewModal,setReviewModal] = useState(false);
   const userID = JSON.parse(sessionStorage.getItem("user"))
   const token = JSON.parse(sessionStorage.getItem("userToken"))
   const [loanDetails, setDetails] = useState({
@@ -68,13 +71,13 @@ export default function LoanApplicationForm() {
     try {
       postRequest('/api/getCustomerDetails', payload, { 'Authorization': token }).then((resp) => {
         setDetails({
-          fname:resp.data.data.first_name,
-          lname:resp.data.data.last_name,
-          pan_number:resp.data.data.pan_number,
-          Account_no:resp.data.data.account_number,
-          contact:resp.data.data.phone,
-          email:resp.data.data.email,
-          address:resp.data.data.address
+          fname: resp.data.data.first_name,
+          lname: resp.data.data.last_name,
+          pan_number: resp.data.data.pan_number,
+          Account_no: resp.data.data.account_number,
+          contact: resp.data.data.phone,
+          email: resp.data.data.email,
+          address: resp.data.data.address
         });
       }).catch((err) => {
         console.log(err)
@@ -96,80 +99,83 @@ export default function LoanApplicationForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-   if(review === true){
-    const payload = {
-      personalInformation: {
-        fullName: loanDetails.fname + " " + loanDetails.lname,
-        dateOfBirth: moment(dob.$d).format("DD/MM/YYYY"),
-        panCardNumber: loanDetails.pan_number,
-        customer_id: JSON.parse(sessionStorage.getItem("user")),
-        Account_no: loanDetails.Account_no,
-        address: loanDetails.address,
-        phoneNumber: loanDetails.contact,
-        email: loanDetails.email,
-        ApplicationDate: moment().format("DD/MM/YYYY"),
-      },
-      employmentInformation: {
-        employmentStatus: loanDetails.employe_status,
-        jobTitle: loanDetails.jobtitle,
-        grossMonthlyIncome: loanDetails.monthlyIncome
-      },
-      financialInformation: {
-        TotalAnnuaIncome: loanDetails.TotalAnnuaIncome,
-        otherSourcesOfIncome: loanDetails.otherSourcesofIncome,
-        monthlyHousingExpenses: loanDetails.monthlyExpence,
-        assets: loanDetails.assets,
-      },
-      loanDetails: {
-        loanType: loanDetails.loanType,
-        loanAmountRequested: loanDetails.loanAmountRequested,
-        purposeOfLoan: loanDetails.purposeofLoan,
-      },
-      coApplicantInformation: {
-        fullName: loanDetails.coFullname,
-        dateOfBirth: moment(coDob).format("DD/MM/YYYY"),
-        relationshipToPrimaryApplicant: loanDetails.relation,
+    if (review === true) {
+      const payload = {
+        personalInformation: {
+          fullName: loanDetails.fname + " " + loanDetails.lname,
+          dateOfBirth: moment(dob.$d).format("DD/MM/YYYY"),
+          panCardNumber: loanDetails.pan_number,
+          customer_id: JSON.parse(sessionStorage.getItem("user")),
+          Account_no: loanDetails.Account_no,
+          address: loanDetails.address,
+          phoneNumber: loanDetails.contact,
+          email: loanDetails.email,
+          ApplicationDate: moment().format("DD/MM/YYYY"),
+        },
+        employmentInformation: {
+          employmentStatus: loanDetails.employe_status,
+          jobTitle: loanDetails.jobtitle,
+          grossMonthlyIncome: loanDetails.monthlyIncome
+        },
+        financialInformation: {
+          TotalAnnuaIncome: loanDetails.TotalAnnuaIncome,
+          otherSourcesOfIncome: loanDetails.otherSourcesofIncome,
+          monthlyHousingExpenses: loanDetails.monthlyExpence,
+          assets: loanDetails.assets,
+        },
+        loanDetails: {
+          loanType: loanDetails.loanType,
+          loanAmountRequested: loanDetails.loanAmountRequested,
+          purposeOfLoan: loanDetails.purposeofLoan,
+        },
+        coApplicantInformation: {
+          fullName: loanDetails.coFullname,
+          dateOfBirth: moment(coDob).format("DD/MM/YYYY"),
+          relationshipToPrimaryApplicant: loanDetails.relation,
+        }
       }
+
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+      }, 3000);
+
+      postRequest("/api/loanApplication", payload, { "Authorization": token }).then((response) => {
+        if (response.data.status == true) {
+          toast.success(response.data.message);
+        } else {
+          toast.error(response.data.message);
+        }
+      }).catch((err) => {
+        console.log(err);
+      })
+      setDetails({
+        fname: "",
+        lname: "",
+        dob: "",
+        pan_number: "",
+        Account_no: "",
+        address: "",
+        contact: "",
+        email: "",
+        employe_status: "",
+        jobtitle: "",
+        monthlyIncome: "",
+        TotalAnnuaIncome: "",
+        otherSourcesofIncome: "",
+        monthlyExpence: "",
+        assets: "",
+        loanType: "",
+        loanAmountRequested: "",
+        purposeofLoan: "",
+        coFullname: "",
+        coDob: "",
+        relation: ""
+      });
+    }else{
+      setReview(true);
+      setReviewModal(true);
     }
-
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 3000);
-
-    postRequest("/api/loanApplication",payload,{"Authorization":token}).then((response) => {
-      if(response.data.status == true){
-        toast.success(response.data.message);
-      }else{
-        toast.error(response.data.message);
-      }
-    }).catch((err) =>{
-      console.log(err);
-    })
-    setDetails({
-      fname: "",
-      lname: "",
-      dob: "",
-      pan_number: "",
-      Account_no: "",
-      address: "",
-      contact: "",
-      email: "",
-      employe_status: "",
-      jobtitle: "",
-      monthlyIncome: "",
-      TotalAnnuaIncome: "",
-      otherSourcesofIncome: "",
-      monthlyExpence: "",
-      assets: "",
-      loanType: "",
-      loanAmountRequested: "",
-      purposeofLoan: "",
-      coFullname: "",
-      coDob: "",
-      relation: ""
-    });
-   }
   }
 
   const handleBack = () => {
@@ -253,16 +259,16 @@ export default function LoanApplicationForm() {
                     MenuProps={MenuProps}
                     required>
                     <MenuItem value={'full-time'} className='position-list'>
-                      <em>ABC</em>
+                      <em>Full Time</em>
                     </MenuItem>
                     <MenuItem value={'part-time'} className='position-list'>
-                      <em>ABC</em>
+                      <em>Part Time</em>
                     </MenuItem>
                     <MenuItem value={'self-employed'} className='position-list'>
-                      <em>ABC</em>
+                      <em>Self Employyed</em>
                     </MenuItem>
                     <MenuItem value={'business'} className='position-list'>
-                      <em>ABC</em>
+                      <em>Business</em>
                     </MenuItem>
                   </Select>
                   <FormHelperText>It is Required Field</FormHelperText>
@@ -311,21 +317,19 @@ export default function LoanApplicationForm() {
                     onChange={(e) => handleChange("loanType", e)}
                     MenuProps={MenuProps}
                     required>
-
-
-                    <MenuItem value={'ABC'} className='position-list'>
+                    <MenuItem value={'personal_loan'} className='position-list'>
                       <em>Personal Loan</em>
                     </MenuItem>
 
-                    <MenuItem value={'ABC'} className='position-list'>
+                    <MenuItem value={'car_loan'} className='position-list'>
                       <em>Car Loan</em>
                     </MenuItem>
 
-                    <MenuItem value={'ABC'} className='position-list'>
+                    <MenuItem value={'home_loan'} className='position-list'>
                       <em>Home Loan</em>
                     </MenuItem>
 
-                    <MenuItem value={'ABC'} className='position-list'>
+                    <MenuItem value={'gold_loan'} className='position-list'>
                       <em>Gold Loan</em>
                     </MenuItem>
                   </Select>
@@ -351,9 +355,9 @@ export default function LoanApplicationForm() {
               </div>
               <div className="col-md-12 mt-3 mb-4">
                 <Label>Co-Applicant's Date of Birth</Label>
-                <LocalizationProvider dateAdapter={AdapterDayjs} fullWidth>
+                <LocalizationProvider dateAdapter={AdapterDayjs} fullWidth required>
                   <DemoContainer components={['DatePicker']}>
-                    <DatePicker value={coDob} name='dob' id='dob' onChange={(newValue) => setCoDOb(newValue)} required />
+                    <DatePicker value={coDob} name='dob' id='dob' onChange={(newValue) => setCoDOb(newValue)} />
                   </DemoContainer>
                 </LocalizationProvider>
               </div>
@@ -373,6 +377,19 @@ export default function LoanApplicationForm() {
 
           {loading && <Loader loading={loading} className="loader" />}
         </div>
+        <Modal isOpen={openReviewModal} >
+          <ModalHeader>Modal title</ModalHeader>
+          <ModalBody>
+            <div>
+              <img src={reviewForm} alt="" width={200} />
+            </div>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" onClick={() => setReviewModal(!openReviewModal)}>
+              Review Application
+            </Button>
+          </ModalFooter>
+        </Modal>
       </div>
     </>
   )

@@ -73,18 +73,18 @@ export default function SideBar({ userData }) {
                 Dashboard
               </Link>
             </li>
-            <li>
+            {/* <li>
               <Link to={'/user/fixed-deposit'} className={`nav-link text-dark  ${activePath == '/user/fixed-deposit' ? 'active' : ''}`}>
                 Fixed Deposite
               </Link>
-            </li>
+            </li> */}
             <li>
               <Link to={'/user/e-passbook'} className={`nav-link text-dark  ${activePath == '/user/e-passbook' ? 'active' : ''}`}>
                 E-pass Book
               </Link>
             </li>
             <li>
-              <Link to={'/user/loans'} className={`nav-link text-dark  ${activePath == '/user/loans' ? 'active' : ''}`}>
+              <Link to={'/user/loansList'} className={`nav-link text-dark  ${activePath == '/user/loansList' ? 'active' : ''}`}>
                 Loans
               </Link>
             </li>

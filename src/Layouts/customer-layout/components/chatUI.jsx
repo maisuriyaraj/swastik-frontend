@@ -78,6 +78,7 @@ export default class ChatUI extends Component {
                     x.username._id !== this.state.user
                 ))
                 this.setState({ userList: newData });
+                console.log(this.state.userList)
             } else {
                 console.error('API response is not an array:', resp.data);
             }

@@ -76,12 +76,12 @@ class CustomerProfile extends Component {
                   <a className={`nav-link ${activeTab == 3 ? 'active' : ''} ms-0`} onClick={() => this.setActiveTab(3)} style={{ cursor: 'pointer' }}>
                     Documents
                   </a>
-                  <a className={`nav-link ${activeTab == 4 ? 'active' : ''} ms-0`} onClick={() => this.setActiveTab(4)} style={{ cursor: 'pointer' }}>
+                  {/* <a className={`nav-link ${activeTab == 4 ? 'active' : ''} ms-0`} onClick={() => this.setActiveTab(4)} style={{ cursor: 'pointer' }}>
                     Loan Details
                   </a>
                   <a className={`nav-link ${activeTab == 5 ? 'active' : ''} ms-0`} onClick={() => this.setActiveTab(5)} style={{ cursor: 'pointer' }}>
                     Fixed Deposit Details
-                  </a>
+                  </a> */}
                 </nav>
               </div>
               <div className='col-md-3 text-end'>

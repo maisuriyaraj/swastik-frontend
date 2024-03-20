@@ -219,7 +219,7 @@ class Dashboard extends Component {
                 </div>
                 <div className="col-lg-6 col-md-12">
                   <div className="row">
-                    <div className="col-md-6">
+                    {/* <div className="col-md-6">
                       <Card
                         className="my-2"
                         style={{
@@ -245,8 +245,8 @@ class Dashboard extends Component {
                           <Button size="small">Apply For Fixed Deposit</Button>
                         </CardActions>
                       </Card>
-                    </div>
-                    <div className="col-md-6">
+                    </div> */}
+                    <div className="col-md-12">
                       <Card
                         className="my-2"
                         style={{
@@ -270,7 +270,7 @@ class Dashboard extends Component {
                         </CardContent>
                         <CardActions>
                           <Button size="small" onClick={() => this.handleOpenModal(true)}>Add Funds</Button>
-                          {this.state.walletDetails.walletBalance && <Button size="small">Pay</Button>}
+                          {/* {this.state.walletDetails.walletBalance && <Button size="small">Pay</Button>} */}
                         </CardActions>
                       </Card>
                     </div>
@@ -301,7 +301,7 @@ class Dashboard extends Component {
                           </Typography>
                         </CardContent>
                         <CardActions>
-                          <Button size="small">Apply For Loan</Button>
+                          <Link to={"/user/loans"} ><Button size="small">Apply For Loan</Button></Link>
                         </CardActions>
                       </Card>
                     </div>
