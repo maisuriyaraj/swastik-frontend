@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './chatUi.scss';
 import logo from '../../../assets/swastik_logo.png'
 import male from '../../../assets/male.png'
-import { Button, TextField } from '@mui/material';
+import { Button, Icon, TextField } from '@mui/material';
 import io from 'socket.io-client';
 import axios from 'axios';
 import { Modal, ModalBody, ModalHeader } from 'reactstrap';
@@ -30,7 +30,16 @@ export default class ChatUI extends Component {
         };
     }
 
+    continuouslyScrolling() {
+        let msgContainer = document.getElementById("messageContainer");
+        if(msgContainer){
+            msgContainer.scrollTop = msgContainer.scrollHeight;
+        }
+
+    }
+
     componentDidMount() {
+        this.continuouslyScrolling()
         const socket = io.connect("http://localhost:3001/");
 
         socket.on("connection", (socket) => {
@@ -109,6 +118,7 @@ export default class ChatUI extends Component {
         e.preventDefault();
         if (this.state.message !== "") {
             this.state.socket.emit('privateMessage', { sender: this.state.user, receiver: this.state.selectedUser, message: this.state.message });
+            this.continuouslyScrolling();
             this.setState({ message: "" });
         } else {
             toast.error("Please Type an Message");
@@ -151,6 +161,9 @@ export default class ChatUI extends Component {
                     <div className='row'>
                         <div className="col-md-3 px-0">
                             <div className='contact-list'>
+                                <div className='w-100 mt-4 px-3 text-end '>
+                                    <Icon className='refresh-ico' onClick={()=>{this.getUserList()}} style={{fontSize:"35px",cursor:'pointer'}}>cached</Icon>
+                                </div>
                                 <ul>
                                     {userList.map((x, i) => (
                                         <li key={i} className={x.username._id === selectedUser._id ? 'activeChat' : ''} onClick={() => this.selecteUser(x.username)}>
@@ -253,7 +266,7 @@ export default class ChatUI extends Component {
                                         onChange={(e) => this.handleOnChangeMessage(e)}
                                         placeholder="Enter your message..."
                                     />
-                                    <Button type="button" onClick={(e) => this.sendMessage(e)} className="msger-send-btn">
+                                    <Button type="submit" onClick={(e) => this.sendMessage(e)} className="msger-send-btn">
                                         Send
                                     </Button>
                                     <Button type="button" onClick={() => this.setState({ payOpen: true })} className="msger-send-btn">

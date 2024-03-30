@@ -9,9 +9,12 @@ export const ProtectedRoute = (props) => {
     const showErrorToast = () =>{
         toast.error("You 're not Authorized")
     }
-
     useEffect(()=>{
         if(!isCustomerLoggedIn()){showErrorToast();}
+    },[])
+
+    useEffect(()=>{
+        
     },[props])
     return (
         <Routes>

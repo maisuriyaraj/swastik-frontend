@@ -12,6 +12,7 @@ import { isLoggedIn } from "../../utils/helperFunctions";
 import { ProtectedRoute } from "./protectedRoutes";
 import AddStaff from "./components/addStaff";
 import LoanList from "./components/loanLIst";
+import ViewLoanDetails from "./components/viewCustomers/viewLoanDetails/viewLoanDetails";
 
 const AdminRoutes = () => {
   return (
@@ -21,7 +22,6 @@ const AdminRoutes = () => {
       <Route path="/admin" element={<AdminLayout />} />
     </Routes>
       <ProtectedRoute path="/admin/dashboard" Component={AdminDashboard} />
-      <ProtectedRoute path="/admin/loans" Component = {LoanList} />
       </>
   );
 };

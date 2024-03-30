@@ -35,7 +35,7 @@ export default function LoanApplicationForm() {
   const [coDob, setCoDOb] = useState();
   const [loading, setLoading] = useState(false);
   const [review, setReview] = useState(false);
-  const [openReviewModal,setReviewModal] = useState(false);
+  const [openReviewModal, setReviewModal] = useState(false);
   const userID = JSON.parse(sessionStorage.getItem("user"))
   const token = JSON.parse(sessionStorage.getItem("userToken"))
   const [loanDetails, setDetails] = useState({
@@ -77,6 +77,7 @@ export default function LoanApplicationForm() {
           Account_no: resp.data.data.account_number,
           contact: resp.data.data.phone,
           email: resp.data.data.email,
+
           address: resp.data.data.address
         });
       }).catch((err) => {
@@ -143,6 +144,7 @@ export default function LoanApplicationForm() {
       postRequest("/api/loanApplication", payload, { "Authorization": token }).then((response) => {
         if (response.data.status == true) {
           toast.success(response.data.message);
+          navigate("/user/loansList")
         } else {
           toast.error(response.data.message);
         }
@@ -172,7 +174,7 @@ export default function LoanApplicationForm() {
         coDob: "",
         relation: ""
       });
-    }else{
+    } else {
       setReview(true);
       setReviewModal(true);
     }
@@ -197,7 +199,7 @@ export default function LoanApplicationForm() {
                 <h3>Basic Information</h3>
               </div>
               <hr className='mb-2' />
-              <div className="col-md-9 mt-2">
+              <div className="col-md-12 mt-2">
                 <div className="row">
                   <div className="col-md-6 form-group">
                     <TextField label="First Name" value={loanDetails.fname} name='first_name' id='first_name' fullWidth onChange={(e) => handleChange("fname", e)} color="primary" required />
@@ -221,22 +223,12 @@ export default function LoanApplicationForm() {
                   <div className="col-md-6 form-group">
                     <TextField label="Pan Number " name='pan' id='pan' value={loanDetails.pan_number} onChange={(e) => handleChange("pan_number", e)} fullWidth color="primary" />
                   </div>
+                  <div className="col-md-6 form-group">
+                    <Label>Date of Birth</Label>
+                    <TextField fullWidth value={dob} name='dob' id='dob' onChange={(e) => setDob(e.target.value)} required type='date' />
+                  </div>
                   <div className="col-md-12 form-group">
                     <TextField label="Full Address" name='address' value={loanDetails.address} onChange={(e) => handleChange("address", e)} id='address' fullWidth color="primary" required />
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-3">
-                <div className="row">
-                  <div className="col-md-12">
-                    <Label>Date of Birth</Label>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DemoContainer components={['DatePicker']}>
-                        <DatePicker value={dob} name='dob' id='dob' onChange={(newValue) => setDob(newValue)} required />
-                      </DemoContainer>
-
-                    </LocalizationProvider>
-
                   </div>
                 </div>
               </div>
@@ -278,10 +270,10 @@ export default function LoanApplicationForm() {
                 <TextField label="Job or Business Title" name='jobtitle' id='jobtitle' value={loanDetails.jobtitle} onChange={(e) => handleChange("jobtitle", e)} fullWidth color="primary" required />
               </div>
               <div className="col-md-6">
-                <TextField label="Gross Monthly Income" name='monthlyIncome' id='monthlyIncome' value={loanDetails.monthlyIncome} onChange={(e) => handleChange("monthlyIncome", e)} fullWidth color="primary" required />
+                <TextField type='number' label="Gross Monthly Income" name='monthlyIncome' id='monthlyIncome' value={loanDetails.monthlyIncome} onChange={(e) => handleChange("monthlyIncome", e)} fullWidth color="primary" required />
               </div>
               <div className="col-md-6">
-                <TextField label="Annual Income" name='TotalAnnuaIncome' id='TotalAnnuaIncome' value={loanDetails.TotalAnnuaIncome} onChange={(e) => handleChange("TotalAnnuaIncome", e)} fullWidth color="primary" required />
+                <TextField type='number' label="Annual Income" name='TotalAnnuaIncome' id='TotalAnnuaIncome' value={loanDetails.TotalAnnuaIncome} onChange={(e) => handleChange("TotalAnnuaIncome", e)} fullWidth color="primary" required />
               </div>
             </div>
             <div className='row mt-5'>
@@ -293,10 +285,10 @@ export default function LoanApplicationForm() {
                 <TextField label="Assets" name='jobtitle' id='jobtitle' value={loanDetails.assets} onChange={(e) => handleChange("assets", e)} fullWidth color="primary" required />
               </div>
               <div className="col-md-6 mt-4">
-                <TextField label="Monthly House Income" name='monthlyExpence' id='monthlyExpence' value={loanDetails.monthlyExpence} onChange={(e) => handleChange("monthlyExpence", e)} fullWidth color="primary" required />
+                <TextField label="Monthly House Income" type='number' name='monthlyExpence' id='monthlyExpence' value={loanDetails.monthlyExpence} onChange={(e) => handleChange("monthlyExpence", e)} fullWidth color="primary" required />
               </div>
               <div className="col-md-6 mt-4">
-                <TextField label="Other Sources foir Income" name='otherSourcesOfIncome' id='otherSourcesOfIncome' value={loanDetails.otherSourcesofIncome} onChange={(e) => handleChange("otherSourcesofIncome", e)} fullWidth color="primary" required />
+                <TextField label="Other Sources for Income" name='otherSourcesOfIncome' id='otherSourcesOfIncome' value={loanDetails.otherSourcesofIncome} onChange={(e) => handleChange("otherSourcesofIncome", e)} fullWidth color="primary" required />
                 <FormHelperText>If You have No Information about you can Put "N/A"</FormHelperText>
               </div>
             </div>
@@ -338,7 +330,7 @@ export default function LoanApplicationForm() {
                 </FormControl>
               </div>
               <div className="col-md-6">
-                <TextField label="Requested Loan Amount " name='loanAmountRequested' id='loanAmountRequested' value={loanDetails.loanAmountRequested} onChange={(e) => handleChange("loanAmountRequested", e)} fullWidth color="primary" required />
+                <TextField label="Requested Loan Amount " type='number' name='loanAmountRequested' id='loanAmountRequested' value={loanDetails.loanAmountRequested} onChange={(e) => handleChange("loanAmountRequested", e)} fullWidth color="primary" required />
               </div>
               <div className="col-md-6">
                 <TextField label="Purpose Of loan" name='purposeofLoan' id='purposeofLoan' value={loanDetails.purposeofLoan} onChange={(e) => handleChange("purposeofLoan", e)} fullWidth color="primary" required />
@@ -378,10 +370,13 @@ export default function LoanApplicationForm() {
           {loading && <Loader loading={loading} className="loader" />}
         </div>
         <Modal isOpen={openReviewModal} >
-          <ModalHeader>Modal title</ModalHeader>
+          <ModalHeader>Review Alert</ModalHeader>
           <ModalBody>
-            <div>
+            <div className='text-center'>
               <img src={reviewForm} alt="" width={200} />
+            </div>
+            <div className='text-center'>
+              <p>Plaese Review Your Application Details Before doing further process.</p>
             </div>
           </ModalBody>
           <ModalFooter>

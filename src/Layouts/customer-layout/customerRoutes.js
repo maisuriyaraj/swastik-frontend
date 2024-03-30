@@ -13,7 +13,8 @@ import EPassbook from './components/ePassbook';
 import FixedDeposit from './components/fixedDeposit';
 import LoansDetails from './components/loans-details';
 import LoanApplicationForm from './components/loanApplicationForm';
-import LoanList from './components/loanLIst';
+import LoanList from './components/Loans/loanLIst';
+import ViewLoanDetails from './components/Loans/viewLoans.jsx/viewLoanDetails';
 
 export default function CustomerRoutes() {
   return (
@@ -30,6 +31,7 @@ export default function CustomerRoutes() {
       <ProtectedRoute path='/loans' exact Component = {LoansDetails} />
       <ProtectedRoute path='/apply-now' exact  Component = {LoanApplicationForm} />
       <ProtectedRoute path= "/loansList" exact Component = {LoanList} />
+      <ProtectedRoute path="/loan-details/:loanId" Component = {ViewLoanDetails}  />
 
    </>
   )

@@ -10,6 +10,8 @@ import SideBar from './components/sideBar';
 import ViewCustomersInfo from './components/viewCustomers/viewCustomersInfo';
 import AdminActivities from './components/adminActivities';
 import BankStaff from './components/bankStaff';
+import ViewLoanDetails from './components/viewCustomers/viewLoanDetails/viewLoanDetails';
+import LoanList from './components/loanLIst';
 
 
 export default function AdminLayout() {
@@ -31,6 +33,9 @@ export default function AdminLayout() {
         <ProtectedRoute path="/customer" Component={ViewCustomersInfo} />
         <ProtectedRoute path="/activities" Component={AdminActivities} />
         <ProtectedRoute path="/bank-staff" Component={BankStaff} />
+        <ProtectedRoute path="/loans" Component = {LoanList} />
+        <ProtectedRoute path="/customer/loan-details/:loanId" Component = {ViewLoanDetails}  />
+
 
       </>}
       {loading && <Loader loading={loading} className="loader" />}
