@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import "../public.scss";
+import "../../Public-Layout/public.scss";
 import { Button, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import logo from "../../../assets/swastik_logo.png"
@@ -9,7 +9,8 @@ import { toast } from 'react-toastify';
 
 export default function UploadDocuments() {
     const [doc_type, setDoctype] = useState("adharcard");
-    const { id, token } = useParams();
+    const { id} = useParams();
+    const token = JSON.parse(sessionStorage.getItem("userToken")); 
     const [queryParams, setQueryParams] = useState(id);
     const [adharUploaded, setAdharState] = useState(false);
     const [panUploaded, setPanState] = useState(false);
@@ -56,6 +57,7 @@ export default function UploadDocuments() {
 
     function handleUpload(e) {
         e.preventDefault();
+        console.log(token)
         if (file1 && file2) {
             setLoading(true);
             let formData = new FormData();

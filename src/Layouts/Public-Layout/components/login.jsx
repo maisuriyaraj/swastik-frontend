@@ -16,6 +16,8 @@ export default function Login() {
   const [loading, setLoading] = useState(true);
   const [icon, setIcon] = useState("visibility");
   const [apiResponse, setRes] = useState();
+  const searchParams = new URLSearchParams(window.location.search);
+  const redirectPath = searchParams.get('redirctPath') || "";
   const [user_captcha, setCaptcha] = useState("");
   const [captcha, setcap] = useState("");
   const navigate = useNavigate();
@@ -40,6 +42,7 @@ export default function Login() {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
+      console.log(redirectPath.replace(":id","1234"))
     }, 2000);
     setcap(generateRandomString())
   }, []);
@@ -70,7 +73,11 @@ export default function Login() {
             startLoader();
             sessionStorage.setItem("userToken", JSON.stringify(resp.data.token));
             sessionStorage.setItem("user", JSON.stringify(resp.data.user));
-            navigate("/user/dashboard");
+            if(redirectPath){
+              navigate("/user"+redirectPath.replace(":id",resp.data.user));
+            }else{
+              navigate("/user/dashboard");
+            }
           } else if (resp.data.status == false && resp.data.code == 501) {
             setRes(resp.data.status);
             toast.error(resp.data.message);

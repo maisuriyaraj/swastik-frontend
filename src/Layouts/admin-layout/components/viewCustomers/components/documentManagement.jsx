@@ -7,16 +7,30 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import TableHead from '@mui/material/TableHead';
 import { Button } from '@mui/material';
-import { BASE_URL } from '../../../../../utils/axios-service';
+import { BASE_URL, postRequest } from '../../../../../utils/axios-service';
 import {  Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { toast } from 'react-toastify';
 
-export default function DocumentManagement({ customerDocs }) {
+export default function DocumentManagement({ customerDocs ,email}) {
     const [modal, setModal] = useState(false);
     const [doc_path,setDocs] = useState('');
     const [docs,setDocsArray] = useState([]);
     const openPreview = (doc_path) =>{
         setModal(true);
         setDocs(doc_path);
+    }
+
+    const sendNotifyEmail = () =>{
+        postRequest("/api/uploadDocsEmailNotify",{email}).then((resp) => {
+            if(resp.data.status == true){
+                toast.success("Email Sent Successfully !");
+            }else{
+                toast.error(resp.data.message)
+            }
+        }).catch(err => {
+            console.log(err);
+            toast.error(err)
+        })
     }
   const toggle = () => setModal(!modal);
     useEffect(() => {
@@ -71,10 +85,12 @@ export default function DocumentManagement({ customerDocs }) {
                             </TableBody>
                         </Table> 
                     </TableContainer>}
+
+                    {docs.length == 0 && <Button variant='contained' className='mt-3' onClick={() => sendNotifyEmail()}>Notify Customer for Upload Documents</Button>}
                 </div>
 
                 <Modal isOpen={modal} toggle={toggle} >
-                    <ModalHeader toggle={toggle}>Modal title</ModalHeader>
+                    <ModalHeader toggle={toggle}>Documents</ModalHeader>
                     <ModalBody>
                         <iframe src={`${BASE_URL}/${doc_path}`} height={'500px'} width={'100%'} frameborder="0"></iframe>
                     </ModalBody>

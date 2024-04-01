@@ -59,7 +59,7 @@ export default function EPassbook() {
       }
 
     const generatePDF = () => {
-        pdfMake.createPdf(getPasswbookPDF(userDetails,Transection)).download(`${customer}.pdf`);
+        pdfMake.createPdf(getPasswbookPDF(userDetails,Transection)).download(`passbook.pdf`);
       }
     return (
         <div className="" id='transectionCustomer'>

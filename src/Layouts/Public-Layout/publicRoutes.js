@@ -8,7 +8,6 @@ import {
 import PublicLayout from ".";
 import Login from "./components/login";
 import Registration from "./components/Registration/register";
-import UploadDocuments from "./components/uploadDocuments";
 import ForgotPassword from "./components/forgotPassword";
 import ResetPassword from "./components/resetPassword";
 
@@ -18,8 +17,7 @@ const PublicRoutes = () => {
         <Route path="/" element={<PublicLayout />} />
         <Route path="/user-login" element={<Login />} />
         <Route path="/user-regstration" element={<Registration />} />
-        <Route path="/upload-docs/:id/:token" element={<UploadDocuments />} />
-        {/* <Route path="/example" element={<Counterx />} /> */}
+        {/* <Route path="/upload-docs/:id" element={<UploadDocuments />} /> */}
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/resetPass/:id/:token" element={<ResetPassword />} />
 

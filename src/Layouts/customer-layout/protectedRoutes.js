@@ -24,7 +24,7 @@ export const ProtectedRoute = (props) => {
                     isCustomerLoggedIn() ? (
                         <Component {...props} />
                     ) :
-                        <Navigate to={"/"} />
+                        <Navigate to={`/user-login?redirctPath=${path}`} />
                 }
             />
             </Routes>

@@ -14,7 +14,7 @@ export default function LoanDocumentManagement(props) {
     const [blobUrl, setBlobUrl] = useState();
     const [previewDoc, setPreviewDoc] = useState();
     const [selectedDoc, setSelectedDoc] = useState(null);
-    const token = JSON.parse(sessionStorage.getItem("staffAuth"));
+    const token = JSON.parse(sessionStorage.getItem("AdminAuth"));
     const [documentList, setDocumentList] = useState([]);
     const [docStatus, setDocStatus] = useState("");
 

@@ -116,7 +116,7 @@ class ViewCustomersInfo extends Component {
             <hr className="mt-0 mb-4" />
             {activeTab == 1 && <BankProfile userDetails={this.state.userDetails} />}
             {activeTab == 2 && <AccountDetails userDetails={this.state.userDetails} />}
-            {activeTab == 3 && <DocumentManagement customerDocs={customerDocs} />}
+            {activeTab == 3 && <DocumentManagement customerDocs={customerDocs} email={this.state.userDetails.email} />}
             {activeTab == 4 && <DepositWithdraw userDetails={this.state.userDetails} />}
             {activeTab == 5 && <LoanDetails loanDetails={this.state.loanDetails} />}
             {activeTab == 6 && <CustomerTransections userDetails={this.state.userDetails} userTransections={userTransections} />}

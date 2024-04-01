@@ -15,6 +15,7 @@ import LoansDetails from './components/loans-details';
 import LoanApplicationForm from './components/loanApplicationForm';
 import LoanList from './components/Loans/loanLIst';
 import ViewLoanDetails from './components/Loans/viewLoans.jsx/viewLoanDetails';
+import UploadDocuments from './components/uploadDocuments';
 
 export default function CustomerRoutes() {
   return (
@@ -30,6 +31,7 @@ export default function CustomerRoutes() {
       <ProtectedRoute path="/fixed-deposit" exact Component = {FixedDeposit} />
       <ProtectedRoute path='/loans' exact Component = {LoansDetails} />
       <ProtectedRoute path='/apply-now' exact  Component = {LoanApplicationForm} />
+      <ProtectedRoute path="/upload-docs/:id" exact Component={UploadDocuments} />
       <ProtectedRoute path= "/loansList" exact Component = {LoanList} />
       <ProtectedRoute path="/loan-details/:loanId" Component = {ViewLoanDetails}  />
 
