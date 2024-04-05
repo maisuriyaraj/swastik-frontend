@@ -10,7 +10,7 @@ import StaffDashboard from './components/staffDashboard';
 import { ProtectedRoute } from './components/protectedRoutes';
 import ViewCustomersInfo from './components/viewCustomers/viewCustomersInfo';
 import LoanList from './components/loanLIst';
-import ViewLoanDetails from '../admin-layout/components/viewCustomers/viewLoanDetails/viewLoanDetails';
+import ViewLoanDetails from './components/viewCustomers/components/viewLoanDetails/viewLoanDetails';
   
 
 export default function StaffLayoutRoutes() {

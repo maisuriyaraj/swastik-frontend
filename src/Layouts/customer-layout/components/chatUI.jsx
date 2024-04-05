@@ -84,7 +84,7 @@ export default class ChatUI extends Component {
             if (Array.isArray(resp.data.data)) {
                 let data = resp.data.data
                 let newData = data.filter((x) => (
-                    x.username._id !== this.state.user
+                    x?.username?._id !== this.state.user
                 ))
                 this.setState({ userList: newData });
                 console.log(this.state.userList)

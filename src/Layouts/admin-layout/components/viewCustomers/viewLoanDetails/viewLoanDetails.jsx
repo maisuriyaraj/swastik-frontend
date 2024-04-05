@@ -12,7 +12,7 @@ export default function ViewLoanDetails() {
 
   const [activeTab, setActive] = useState(1);
   const [loanDetails, setDetails] = useState(null);
-  const token = JSON.parse(sessionStorage.getItem("staffAuth"));
+  const token = JSON.parse(sessionStorage.getItem("AdminAuth"));
   const { loanId } = useParams();
 
   useEffect(() => {
@@ -35,6 +35,24 @@ export default function ViewLoanDetails() {
       toast.error(response.data.message);
     }
   }
+
+  const ChangeLoanStatus = (status) => {
+    const payload = {
+      loan_id: loanId,
+      account_number: loanDetails.personalInformation.Account_no,
+      email: loanDetails.personalInformation.email,
+      status: status
+    }
+
+    postRequest("/api/changeLoanStatus", payload, { "Authorization": token }).then((resp) => {
+      if (resp.data.status == true) {
+        toast.success(resp.data.message);
+        window.location.reload();
+      } else {
+        toast.error(resp.data.message);
+      }
+    });
+  }
   return (
     <>
       <div className='container-fluid'>
@@ -50,6 +68,16 @@ export default function ViewLoanDetails() {
                 </a>
               </div>
               <div className='d-flex'>
+                <div className="dropdown">
+                  <Button variant='contained' size='large' className='' color='secondary' type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    {loanDetails?.loanDetails?.loan_status}
+                  </Button>
+                  <ul className="dropdown-menu">
+                    <li><a className="dropdown-item p-2" onClick={() => ChangeLoanStatus('Pending')}>Pending</a></li>
+                    <li><a className="dropdown-item p-2" onClick={() => ChangeLoanStatus('Approved')}>Approved</a></li>
+                    <li><a className="dropdown-item p-2" onClick={() => ChangeLoanStatus('Rejected')}>Rejected</a></li>
+                  </ul>
+                </div>
                 <Button variant='contained' size='small' color='secondary' className='mx-2' onClick={() => window.history.go(-1)}>Back</Button>
               </div>
             </nav>

@@ -2,7 +2,7 @@ import { Button, Paper, TableBody, TableCell, TableContainer, TableHead, TableRo
 import React, { useCallback, useEffect, useState } from 'react'
 import { Modal, ModalBody, ModalFooter, ModalHeader, Table } from 'reactstrap';
 import { useDropzone } from 'react-dropzone';
-import { postRequest, BASE_URL } from '../../../../../../utils/axios-service';
+import { postRequest,BASE_URL } from '../../../../../../../utils/axios-service';
 import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
 
@@ -14,7 +14,7 @@ export default function LoanDocumentManagement(props) {
     const [blobUrl, setBlobUrl] = useState();
     const [previewDoc, setPreviewDoc] = useState();
     const [selectedDoc, setSelectedDoc] = useState(null);
-    const token = JSON.parse(sessionStorage.getItem("AdminAuth"));
+    const token = JSON.parse(sessionStorage.getItem("staffAuth"));
     const [documentList, setDocumentList] = useState([]);
     const [docStatus, setDocStatus] = useState("");
 

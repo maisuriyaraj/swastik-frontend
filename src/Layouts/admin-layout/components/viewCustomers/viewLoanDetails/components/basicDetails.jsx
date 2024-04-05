@@ -8,7 +8,7 @@ import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
 export default function BasicDetails({ loanDetails }) {
     const [readonly, setReadOnly] = useState(true);
-    const token = JSON.parse(sessionStorage.getItem("staffAuth"));
+    const token = JSON.parse(sessionStorage.getItem("AdminAuth"));
     const [openEmailModal, setEmailModal] = useState(false);
     const [loanData, setData] = useState({
         fullname: "",

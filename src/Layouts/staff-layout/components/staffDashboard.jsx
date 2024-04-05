@@ -109,7 +109,7 @@ export default function StaffDashboard(props) {
     <>
       <div className="container-fluid" id='staffDashboard'>
       <SideBar userData={employee} />
-      <div className="container">
+      <div className="container-fluid">
       <div className="row main-div">
           <div className="col-md-12 px-1">
             <div className="dashboard">

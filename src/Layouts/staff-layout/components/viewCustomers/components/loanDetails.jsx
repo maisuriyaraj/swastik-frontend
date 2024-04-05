@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function LoanDetails({ loanDetails }) {
 
-    const token = JSON.parse(sessionStorage.getItem("AdminAuth"));
+    const token = JSON.parse(sessionStorage.getItem("staffAuth"));
     const navigator = useNavigate()
     const ChangeLoanStatus = (item, status) => {
         const payload = {

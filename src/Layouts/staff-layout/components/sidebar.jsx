@@ -123,7 +123,7 @@ export default function SideBar({ userData }) {
           <div className='d-flex align-items-center justify-content-start'>
             <Icon onClick={openSideBar} className='menu-icon'>menu_icon</Icon><span className='fs-6'>Menu</span>
           </div>
-          <div className='w-100 text-center'>
+          <div className='w-100 text-end'>
             <img src={logo} width={60} alt="" />
           </div>
         </div>

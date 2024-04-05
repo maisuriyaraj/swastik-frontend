@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField } from '@mui/material';
 import moment from 'moment';
-import Loader from '../../../../../../utils/react-loader';
-import { postRequest } from '../../../../../../utils/axios-service';
+import Loader from '../../../../../../../utils/react-loader';
+import { postRequest } from '../../../../../../../utils/axios-service';
 import { toast } from 'react-toastify';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
 export default function BasicDetails({ loanDetails }) {
     const [readonly, setReadOnly] = useState(true);
-    const token = JSON.parse(sessionStorage.getItem("AdminAuth"));
+    const token = JSON.parse(sessionStorage.getItem("staffAuth"));
     const [openEmailModal, setEmailModal] = useState(false);
     const [loanData, setData] = useState({
         fullname: "",

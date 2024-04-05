@@ -155,7 +155,7 @@ class Dashboard extends Component {
                 </div>
               </div>
             </div>
-            <div className='container main-div'>
+            <div className='container-fluid main-div'>
               <div className="row">
                 <div className="col-md-6 mt-2">
                   <Card sx={{ minWidth: '100%', height: '413px', overflow: 'hidden' }}>
